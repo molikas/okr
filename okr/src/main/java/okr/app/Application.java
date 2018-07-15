@@ -9,12 +9,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories;
 import org.springframework.data.neo4j.transaction.Neo4jTransactionManager;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
 @EnableTransactionManagement
+@EnableScheduling
 @EnableNeo4jRepositories ("okr.repository")
-@ComponentScan ("okr.repository")
+@ComponentScan ({"okr.repository", "okr.etl.providers", "okr.jira"})
 public class Application {
 	
 	@Value("${neo4j.username}")
@@ -29,7 +31,6 @@ public class Application {
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
-
 	
 	@Bean
 	public SessionFactory sessionFactory() {

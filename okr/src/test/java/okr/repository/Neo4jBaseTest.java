@@ -15,14 +15,14 @@ import okr.configuration.JunitPersistenceContext;
  * Abstract test to initialize common configuration for Neo4j tests
  * @author isidenica
  */
-@TestPropertySource("classpath:application.properties")
+@TestPropertySource("classpath:application-test.properties")
 @ContextConfiguration(classes = {JunitPersistenceContext.class})
-public class Neo4jTest {
+public class Neo4jBaseTest {
 
     @Autowired
     private ApplicationContext ctx;
 
-    @Before
+    @Before // clean DB
     public void clearAllGraphRepositories() {
         Map<String, Neo4jRepository> graphRepositories = ctx.getBeansOfType(Neo4jRepository.class);
         for (Neo4jRepository graphRepository : graphRepositories.values()) {

@@ -9,13 +9,12 @@ import static org.junit.Assert.*;
 
 import okr.domain.Objective;
 
-
 /*
  * Sanity check 
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-public class DomainTest extends Neo4jTest {
+public class DomainTest extends Neo4jBaseTest {
 
 	private static final String OBJ_NAME = "Obj: Name";
     private static final String OBJ_DESCRIPTION = "Obj: Description";
