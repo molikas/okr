@@ -1,4 +1,4 @@
-package okr.repository;
+package okr.neo4j.repository;
 
 import java.util.Map;
 
@@ -17,7 +17,7 @@ import okr.configuration.JunitPersistenceContext;
  */
 @TestPropertySource("classpath:application-test.properties")
 @ContextConfiguration(classes = {JunitPersistenceContext.class})
-public class Neo4jBaseTest {
+public class Neo4jBaseTest{
 
     @Autowired
     private ApplicationContext ctx;

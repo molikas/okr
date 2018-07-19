@@ -15,8 +15,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication
 @EnableTransactionManagement
 @EnableScheduling
-@EnableNeo4jRepositories ("okr.repository")
-@ComponentScan ({"okr.repository", "okr.etl.providers", "okr.jira"})
+@EnableNeo4jRepositories ("okr.neo4j.repository")
+@ComponentScan ({"okr.neo4j.repository", "okr.etl", "okr.mapping"})
 public class Application {
 	
 	@Value("${neo4j.username}")
@@ -34,7 +34,7 @@ public class Application {
 	
 	@Bean
 	public SessionFactory sessionFactory() {
-		return new SessionFactory(getConfiguration(), "okr.domain");
+		return new SessionFactory(getConfiguration(), "okr.neo4j.repository");
 	}
 
 	@Bean

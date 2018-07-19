@@ -1,8 +1,6 @@
-package okr.repository;
+package okr.neo4j.repository;
 
 import org.springframework.data.neo4j.repository.Neo4jRepository;
-
-import okr.domain.Objective;
 
 /**
  * Access for objectives

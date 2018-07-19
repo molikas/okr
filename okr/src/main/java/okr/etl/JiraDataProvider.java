@@ -1,4 +1,4 @@
-package okr.etl.providers;
+package okr.etl;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -12,15 +12,15 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StopWatch;
 import org.springframework.util.StringUtils;
 
-import com.atlassian.jira.rest.client.api.domain.Issue;
 import com.atlassian.jira.rest.client.api.domain.SearchResult;
 import com.atlassian.util.concurrent.Promise;
 
-import okr.domain.Objective;
-import okr.repository.ObjectiveRepository;
+import okr.mapping.schema.ExpressionBasedMapper;
+import okr.mapping.schema.GraphSchema;
+import okr.neo4j.repository.Objective;
+import okr.neo4j.repository.ObjectiveRepository;
 
 /**
  * Provider that takes all the data from Jira. It is possible to extend the
@@ -38,7 +38,7 @@ public class JiraDataProvider extends JiraInvoker implements DataProvider {
 	
 	@Autowired
 	private ObjectiveRepository oRepo;
-
+	
 	/**
 	 * Load data once on application startup
 	 * TODO: Move to scheduled task
@@ -47,34 +47,27 @@ public class JiraDataProvider extends JiraInvoker implements DataProvider {
 	public void oneBigImportJob() {
 		if (StringUtils.isEmpty(importJql)) return; //TODO: Proper configuration loading
 		
-		StopWatch watch = new StopWatch();
 		Set<String> fields = new HashSet<>(CollectionUtils.arrayToList(new String[]{"*navigable"}));
 
 		int i, total;
 		i = total = 0;
 		List<Objective> objectiveList = new ArrayList<>();
 		do {
-			watch.start("batch: "+i);
 			// get initial data
 			Promise<SearchResult> searchJqlPromise = client().getSearchClient().searchJql(importJql, 100, 0, fields );
 			SearchResult srez = searchJqlPromise.claim();
 			total = srez.getTotal();
-			for (Issue issue :srez.getIssues()) {
-				Objective obj = new Objective(issue.getKey(), issue.getSummary(), "");
-				obj.setProperties(SpelUtils.extractFieldValue(issue));
-				objectiveList.add(obj);
-			}
 			
-			watch.stop();
-			log.info("Jira import Batch: "+i+" - "+(i+100)+"; in seconds: "+watch.getLastTaskTimeMillis()/1000);
+			objectiveList.addAll(new ExpressionBasedMapper(Objective.class).map(srez.getIssues(), new GraphSchema()));
+
 			i += 100;
 		}while (i < total);
-		log.info("Total tasks processed: "+total+"; in seconds: "+watch.getTotalTimeSeconds()/1000);
 		// just to make sure there is no magic
 		if (objectiveList.size() != total) {
 			log.info("Retrieved issues sizes do not match total= "+total+ "; actual size="+objectiveList.size());
 		}
 		oRepo.save(objectiveList, 1);
+		oRepo.findAll();
 	}
 
 	// Getters - Setters

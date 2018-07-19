@@ -14,9 +14,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  *
  */
 @Configuration
-@EnableNeo4jRepositories("okr.repository")
 @EnableTransactionManagement
-@ComponentScan("okr")
+@EnableNeo4jRepositories ("okr.neo4j.repository")
+@ComponentScan ({"okr.neo4j.repository", "okr.etl", "okr.mapping"})
 public class JunitPersistenceContext {
 
 	@Bean
@@ -27,7 +27,7 @@ public class JunitPersistenceContext {
 
 	@Bean
 	public SessionFactory sessionFactory() {
-		return new SessionFactory(configuration(), "okr.domain");
+		return new SessionFactory(configuration(), "okr.neo4j.repository");
 	}
 
 	@Bean

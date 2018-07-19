@@ -1,4 +1,4 @@
-package okr.etl.providers;
+package okr.etl;
 
 /**
  * Marker interface to gather all the etl data providers, to use in sync jobs.

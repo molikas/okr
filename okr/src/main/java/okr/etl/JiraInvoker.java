@@ -1,4 +1,4 @@
-package okr.etl.providers;
+package okr.etl;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -10,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.atlassian.jira.rest.client.api.JiraRestClient;
 import com.atlassian.jira.rest.client.api.JiraRestClientFactory;
 import com.atlassian.jira.rest.client.internal.async.AsynchronousJiraRestClientFactory;
-
-import okr.jira.JiraAuthenticationProvider;
 
 /**
  * Abstract class to hold common methods for classes that need to formally have
