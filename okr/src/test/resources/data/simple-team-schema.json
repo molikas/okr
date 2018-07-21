@@ -1,0 +1,82 @@
+{
+    "nodes": [
+        {
+            "id": "f2b56a4a-d687-402c-bf9b-6f39a0300bef",
+            "x": 28.988113919093145,
+            "y": -58.05664314644876,
+            "label": "Squad",
+            "group": "squad",
+            "uniqueness": "teamName",
+            "extractFields": "teamName"
+        },
+        {
+            "id": "76852c23-2d87-427f-b039-5afa64450180",
+            "x": -85.81206191213873,
+            "y": -42.24530430327386,
+            "label": "dev",
+            "group": "dev",
+            "uniqueness": "person.email",
+            "extractFields": "person.name,person.role,person.email"
+        },
+        {
+            "id": "a707c811-5f79-4db8-ae92-4671d487e322",
+            "x": 94.45503416949751,
+            "y": 39.943015788256474,
+            "label": "qa",
+            "group": "qa",
+            "uniqueness": "person.email",
+            "extractFields": "person.name,person.role,person.email"
+        },
+        {
+            "id": "dea47924-c8e3-433a-a117-19d079f3af5d",
+            "x": -24.319581476270855,
+            "y": 56.06558881430317,
+            "label": "wso",
+            "group": "wso",
+            "uniqueness": "person.email",
+            "extractFields": "person.name,person.role,person.email"
+        }
+    ],
+    "edges": [
+        {
+            "id": "87aec935-1031-47ca-b470-6afc43b90933",
+            "from": "76852c23-2d87-427f-b039-5afa64450180",
+            "to": "f2b56a4a-d687-402c-bf9b-6f39a0300bef",
+            "label": "belongs_to",
+            "extractFields": "",
+            "arrows": "to"
+        },
+        {
+            "id": "debd8d26-3ca4-48a1-b659-22cdcf64b958",
+            "from": "a707c811-5f79-4db8-ae92-4671d487e322",
+            "to": "f2b56a4a-d687-402c-bf9b-6f39a0300bef",
+            "label": "belongs_to",
+            "extractFields": "",
+            "arrows": "to"
+        },
+        {
+            "id": "2b6a4a35-0709-40d7-a614-884f5bd78d56",
+            "from": "dea47924-c8e3-433a-a117-19d079f3af5d",
+            "to": "f2b56a4a-d687-402c-bf9b-6f39a0300bef",
+            "label": "belongs_to",
+            "extractFields": "",
+            "arrows": "to"
+        },
+        {
+            "id": "0f7edc00-88ce-4120-9ae5-9d045528e7a8",
+            "from": "76852c23-2d87-427f-b039-5afa64450180",
+            "to": "dea47924-c8e3-433a-a117-19d079f3af5d",
+            "label": "reports_to",
+            "extractFields": "",
+            "arrows": "to"
+        },
+        {
+            "id": "b205a310-ee20-4ba2-8c40-2d7da9806372",
+            "from": "a707c811-5f79-4db8-ae92-4671d487e322",
+            "to": "dea47924-c8e3-433a-a117-19d079f3af5d",
+            "label": "reports_to",
+            "extractFields": "",
+            "arrows": "to"
+        }
+    ]
+}

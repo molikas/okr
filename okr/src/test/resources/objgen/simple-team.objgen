@@ -1,0 +1,21 @@
+teamName= Team A
+members[0]
+   name= Wade O.
+   email= wade@email.com
+   role= wso
+   noise= Noise Property 1
+members[1]
+   name= Betty A.
+   email= betty@email.com
+   role= ba
+   noise= Noise Property 2
+members[2]
+   name= Jane Q.
+   email= jane@email.com
+   role= qa
+   noise= Noise Property 3
+members[3]
+   name= Dennis D.
+   email= dennis@email.com
+   role= dev
+   noise= Noise Property 3

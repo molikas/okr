@@ -1,0 +1,133 @@
+{
+    "nodes": [
+        {
+            "id": "squad",
+            "x": -30.434145741264242,
+            "y": 20.99564293034242,
+            "label": "Squad",
+            "group": "squad"
+        },
+        {
+            "id": "po",
+            "x": 143.94601954799185,
+            "y": 68.10308094687132,
+            "label": "Product Owner",
+            "group": "po"
+        },
+        {
+            "id": "wso",
+            "x": 222.4584162422067,
+            "y": -77.35146450767405,
+            "label": "Work Stream Owner",
+            "group": "wso"
+        },
+        {
+            "id": "ba",
+            "x": 19.9790773992316,
+            "y": 179.67332888075555,
+            "label": "BA",
+            "group": "ba"
+        },
+        {
+            "id": "pm",
+            "x": 100.21742627809465,
+            "y": 130.49714461903977,
+            "label": "Product Manager",
+            "group": "po"
+        },
+        {
+            "id": "qa",
+            "x": 139.2300770889376,
+            "y": 34.88611032017053,
+            "label": "Quality Assurance",
+            "group": "qa"
+        },
+        {
+            "id": "dev",
+            "x": 165.2300770889376,
+            "y": -15.11388967982947,
+            "label": "Developer",
+            "group": "dev"
+        },
+        {
+            "id": "squad_objective",
+            "x": -117.65197087972318,
+            "y": -19.056230651950727,
+            "label": "Squad Objective",
+            "group": "squad_objective"
+        },
+        {
+            "id": "tribe_objective",
+            "x": -441.22229665584325,
+            "y": 20.62162973728732,
+            "label": "Tribe Objective",
+            "group": "tribe_objective"
+        },
+        {
+            "id": "company_goal",
+            "x": -526.2222966558433,
+            "y": -78.37837026271268,
+            "label": "Company Goal",
+            "group": "company_goal"
+        },
+        {
+            "id": "key_result",
+            "x": -599.8994793145141,
+            "y": 62.630703140501055,
+            "label": "Key Result",
+            "group": "key_result"
+        }
+    ],
+    "edges": [
+        {
+            "id": "ceb9e9d8-3348-4526-aa2c-ea38e13d5561",
+            "from": "squad",
+            "to": "wso"
+        },
+        {
+            "id": "cff1dc3d-753d-44cd-8103-d2f0d9d1dbd5",
+            "from": "squad",
+            "to": "po"
+        },
+        {
+            "id": "13f37b5a-adcf-47bc-8acd-69c299ec2e77",
+            "from": "squad",
+            "to": "ba"
+        },
+        {
+            "id": "1a3596f0-c783-4460-bdf2-07c3969290f9",
+            "from": "squad",
+            "to": "pm"
+        },
+        {
+            "id": "1012172c-bccd-4012-9929-b4fea4a5b1be",
+            "from": "squad",
+            "to": "qa"
+        },
+        {
+            "id": "c4e0c8de-1ec6-49c5-9d87-2a95843d5124",
+            "from": "squad",
+            "to": "dev"
+        },
+        {
+            "id": "a63774d0-fb35-4ba7-8d54-6f2328906454",
+            "from": "tribe_objective",
+            "to": "squad_objective"
+        },
+        {
+            "id": "7fa77fbf-cd63-4eb2-9f6d-8d19c4cbcb79",
+            "from": "company_goal",
+            "to": "tribe_objective"
+        },
+        {
+            "from": "squad_objective",
+            "to": "key_result",
+            "id": "17ad1f22-bb44-4ee0-a581-c0b29614e537"
+        },
+        {
+            "from": "key_result",
+            "to": "squad",
+            "id": "a9f065a6-5735-44c9-864f-76b3e01cf9f2"
+        }
+    ]
+}

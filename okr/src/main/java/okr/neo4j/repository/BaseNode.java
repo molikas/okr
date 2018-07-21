@@ -13,10 +13,9 @@ import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Properties;
 
 /**
- * Common node class
+ * Common persistent node class
  * @author isidenica
- * @param <S>
-*/
+ */
 @NodeEntity
 public class BaseNode {
 	
