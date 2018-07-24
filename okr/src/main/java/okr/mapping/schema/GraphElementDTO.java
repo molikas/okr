@@ -3,6 +3,8 @@ package okr.mapping.schema;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * DTO to transfer generic graph element data
  * 
@@ -20,6 +22,10 @@ public class GraphElementDTO {
 	public GraphElementDTO (String id, String name){
 		this.id = id;
 		this.name = name;
+	}
+	
+	public boolean isNodeName(String nodeName) {
+		return StringUtils.equals(name, nodeName);
 	}
 	
 	public String getId() {

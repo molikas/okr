@@ -68,4 +68,15 @@ public class SpelUtils {
 		return null;
 	}
 
+	public static String extractValue(String expression, GraphElementDTO rootObject, String objId) {
+		Map<String, String> vMap = extractValues(new String[] {expression}, rootObject, rootObject.getId());
+		if (!vMap.isEmpty() && vMap.size() == 1) {
+			return vMap.values().iterator().next();
+		}else {
+			log.info("Multiple evaluation results when extracting single value from object: "+objId);
+		}
+		
+		return "";
+	}
+
 }

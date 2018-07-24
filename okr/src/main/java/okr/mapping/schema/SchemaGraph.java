@@ -55,17 +55,22 @@ public class SchemaGraph extends GraphHolder<SchemaElement>{
 		mapEdges(edges);
 	}
 	
+	// TODO configuraiton with null checks + identify mvp for set of fields
 	private void mapNodes(JsonNode nodes) {
 		Iterator<JsonNode> itrNodes = nodes.iterator();
 		while (itrNodes.hasNext()) {
 			JsonNode node = itrNodes.next();
 			JsonNode id = node.get("id");
-			JsonNode label = node.get("label");
-			JsonNode uniqueness = node.get("uniqueness");
-			JsonNode group = node.get("group");
+			JsonNode displayValue = node.get("label");
+			JsonNode uniqueness = node.get("uuid");
+			JsonNode label = node.get("group");
 			JsonNode qualifier = node.get("qualifier");
-			String[] extraFields = StringUtils.split(node.get("extractFields").textValue(), ",");
-			SchemaNode schNode = new SchemaNode(id.textValue(), label.textValue(), uniqueness.textValue(), group.textValue(), qualifier.textValue(), extraFields);
+			
+			String[] extraFields = new String[] {};
+			if (null != node.get("extractFields")) {
+				extraFields = StringUtils.split(node.get("extractFields").textValue(), ",");
+			}
+			SchemaNode schNode = new SchemaNode(id.textValue(), displayValue.textValue(), uniqueness.textValue(), label.textValue(), qualifier.textValue(), extraFields);
 			graph.addVertex(schNode.getId());
 			cache.put(schNode.getId(), schNode);
 		}

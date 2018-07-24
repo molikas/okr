@@ -4,6 +4,7 @@
 						// filling in the popup DOM elements
 						document.getElementById('operation').innerHTML = "Add Node";
 						document.getElementById('node-id').value = data.id;
+						document.getElementById('node-uuid').value = "";
 						document.getElementById('node-label').value = "";
 						document.getElementById('node-extract-fields').value = "";
 						document.getElementById('node-group').value = data.group;
@@ -15,6 +16,7 @@
 						// filling in the popup DOM elements
 						document.getElementById('operation').innerHTML = "Edit Node";
 						document.getElementById('node-id').value = data.id;
+						document.getElementById('node-uuid').value = data.uuid;
 						document.getElementById('node-label').value = data.label;
 						document.getElementById('node-extract-fields').value = data.extractFields;
 						document.getElementById('node-group').value = data.group;

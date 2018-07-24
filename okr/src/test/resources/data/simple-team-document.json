@@ -24,6 +24,11 @@
       "email": "dennis@email.com",
       "role": "dev",
       "noise": "Noise Property 3"
+    },
+    {
+      "name": "noise",
+      "email": "noise",
+      "role": "noise"
     }
   ]
 }

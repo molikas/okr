@@ -10,12 +10,12 @@ public class SchemaEdge extends SchemaElement {
 	private String from;
 	private String to;
 
-	public SchemaEdge(String id, String from, String to, String label, String[] extractFields) {
+	public SchemaEdge(String id, String from, String to, String displayValue, String[] extractFields) {
 		super();
 		super.id = id;
 		this.from = from;
 		this.to = to;
-		super.label = label;
+		super.displayValue = displayValue;
 		super.extractFields = extractFields;
 	}
 	

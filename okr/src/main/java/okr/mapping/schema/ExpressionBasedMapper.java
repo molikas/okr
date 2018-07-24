@@ -56,8 +56,8 @@ public class ExpressionBasedMapper implements GraphMapper {
 	}
 
 	@Override
-	public <S extends BaseNode> Collection<S> map(DocumentGraph document, SchemaGraph schema) {
-		Collection<S> res = new ArrayList<>();
+	public Collection<BaseNode> map(DocumentGraph document, SchemaGraph schema) {
+		Collection<BaseNode> res = new ArrayList<>();
 		
 		BreadthFirstIterator<String, DefaultEdge> sItr = new BreadthFirstIterator<>(schema.graph);
 		// TODO investigate whether traversal listener is a good option here for init case
@@ -65,7 +65,8 @@ public class ExpressionBasedMapper implements GraphMapper {
 		while (sItr.hasNext()) {
 			String elemId = sItr.next();
 			if (schema.cache.get(elemId) instanceof SchemaNode) {
-				matchObjectsThatMatchCriteria(document, (SchemaNode) schema.cache.get(elemId));	
+				List<BaseNode> matchedNodes = matchObjectsThatMatchCriteria(document, (SchemaNode) schema.cache.get(elemId));
+				res.addAll(matchedNodes);
 			}else {
 				edgeList.add(elemId);
 			}
@@ -78,12 +79,13 @@ public class ExpressionBasedMapper implements GraphMapper {
 		return res;
 	}
 	
-	private List<String> matchObjectsThatMatchCriteria(DocumentGraph document, SchemaNode schemaNode) {
-		List<String> results = new ArrayList<>();
+	private List<BaseNode> matchObjectsThatMatchCriteria(DocumentGraph document, SchemaNode schemaNode) {
+		List<BaseNode> results = new ArrayList<>();
 		DepthFirstIterator<String, DefaultEdge> dItr = new DepthFirstIterator<>(document.graph);
 		while (dItr.hasNext()) {
 			GraphElementDTO nodeDTO = document.cache.get(dItr.next());
-			schemaNode.init(nodeDTO);
+			BaseNode node = schemaNode.init(nodeDTO);
+			if (null != node) results.add(node);
 		}
 		
 		log.info("Mapping node: "+ schemaNode.getId());

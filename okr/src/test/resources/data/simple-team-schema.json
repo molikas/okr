@@ -6,9 +6,8 @@
             "y": -58.05664314644876,
             "label": "Squad",
             "group": "squad",
-            "uniqueness": "teamName",
-            "extractFields": "teamName",
-            "qualifier": ""
+            "uuid": "properties[teamName]",
+            "qualifier": "isNodeName('root')"
         },
         {
             "id": "dev_node",
@@ -16,8 +15,8 @@
             "y": -42.24530430327386,
             "label": "dev",
             "group": "dev",
-            "uniqueness": "person.email",
-            "extractFields": "person.name,person.role,person.email",
+            "uuid": "properties[email]",
+            "extractFields": "properties[name],properties[role],properties[email]",
             "qualifier": "properties[role] == 'dev'"
         },
         {
@@ -26,8 +25,8 @@
             "y": 39.943015788256474,
             "label": "qa",
             "group": "qa",
-            "uniqueness": "person.email",
-            "extractFields": "person.name,person.role,person.email",
+            "uuid": "properties[email]",
+            "extractFields": "properties[name],properties[role],properties[email]",
             "qualifier": "properties[role] == 'qa'"
         },
         {
@@ -36,8 +35,8 @@
             "y": 56.06558881430317,
             "label": "wso",
             "group": "wso",
-            "uniqueness": "person.email",
-            "extractFields": "person.name,person.role,person.email",
+            "uuid": "properties[email]",
+            "extractFields": "properties[name],properties[role],properties[email]",
             "qualifier": "properties[role] == 'wso'"
         }
     ],

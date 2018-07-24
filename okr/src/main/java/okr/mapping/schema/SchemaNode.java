@@ -1,6 +1,9 @@
 package okr.mapping.schema;
 
+import java.util.Map;
 import java.util.logging.Logger;
+
+import okr.neo4j.repository.BaseNode;
 
 /**
  * DTO for holding schema related data
@@ -11,31 +14,36 @@ public class SchemaNode extends SchemaElement {
 
 	private static final Logger log = Logger.getLogger(SchemaNode.class.getName());
 	
+	protected String label;
 	private String uniqueness;
-	private String group;
 	
-	public SchemaNode(String id, String label, String uniqueness, String group, String qualifier, String[] extractFields) {
+	public SchemaNode(String id, String displayValue, String uniqueness, String label, String qualifier, String[] extractFields) {
 		super();
 		super.id = id;
-		super.label = label;
+		super.displayValue = displayValue;
 		this.uniqueness = uniqueness;
-		this.group = group;
+		this.label = label;
 		super.extractFields = extractFields;
+		super.qualifier = qualifier;
 	}	
 
-	public void init(GraphElementDTO nodeDTO) {
+	public BaseNode init(GraphElementDTO nodeDTO) {
 		if (!isQualified(nodeDTO)) {
-			return;
+			return null;
 		}
+		BaseNode node = new BaseNode();
+		node.getLabels().add(this.label);
+		node.setUuid(SpelUtils.extractValue(uniqueness, nodeDTO, nodeDTO.getId()));
+		Map<String, String> eProps = SpelUtils.extractValues(extractFields, nodeDTO, nodeDTO.getId());
+		node.getProperties().putAll(eProps);
 		
 		log.info("Initializing node "+nodeDTO.getName());
+		return node;
 	}	
 	
 	@Override
 	public boolean isQualified(GraphElementDTO nodeDTO) {
 		Boolean qualified = SpelUtils.evaluate(qualifier, nodeDTO, nodeDTO.getId());
-		
-		// Assumes single qualifier expression is provided
 		if (qualified != null) {
 			return qualified;
 		}
@@ -46,17 +54,18 @@ public class SchemaNode extends SchemaElement {
 	} 	
 	
 	// Getters - Setters
+	public String getLabel() {
+		return label;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
+	}
+	
 	public String getUniqueness() {
 		return uniqueness;
 	}
 	public void setUniqueness(String uniqueness) {
 		this.uniqueness = uniqueness;
 	}
-	public String getGroup() {
-		return group;
-	}
-	public void setGroup(String group) {
-		this.group = group;
-	}
-
 }

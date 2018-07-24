@@ -8,7 +8,7 @@ package okr.mapping.schema;
 public abstract class SchemaElement {
 
 	protected String id;
-	protected String label;
+	protected String displayValue;
 	protected String qualifier;
 	protected String[] extractFields;
 	
@@ -21,14 +21,6 @@ public abstract class SchemaElement {
 
 	public void setId(String id) {
 		this.id = id;
-	}
-
-	public String getLabel() {
-		return label;
-	}
-
-	public void setLabel(String label) {
-		this.label = label;
 	}
 
 	public String getQualifier() {
@@ -45,6 +37,14 @@ public abstract class SchemaElement {
 
 	public void setExtractFields(String[] extractFields) {
 		this.extractFields = extractFields;
+	}
+
+	public String getDisplayValue() {
+		return displayValue;
+	}
+
+	public void setDisplayValue(String displayValue) {
+		this.displayValue = displayValue;
 	}
 
 }

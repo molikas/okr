@@ -155,7 +155,7 @@
 
 			 <tr>
 			  <td>Uniqueness Criteria:</td>
-			  <td><input id="node-uniqueness" value="key" /></td>
+			  <td><input id="node-uuid" value="" /></td>
 			</tr>			  
 		  
 			 <tr>
@@ -343,7 +343,7 @@
 			  data.id = document.getElementById('node-id').value;
 			  data.label = document.getElementById('node-label').value;
 			  data.group = document.getElementById('node-group').value;
-			  data.uniqueness = document.getElementById('node-uniqueness').value;
+			  data.uuid = document.getElementById('node-uuid').value;
 			  data.extractFields = document.getElementById('node-extract-fields').value;
 			  clearPopUp();
 			  callback(data);

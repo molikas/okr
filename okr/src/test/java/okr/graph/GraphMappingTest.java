@@ -1,7 +1,11 @@
 package okr.graph;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
+
+import java.util.Collection;
 
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.traverse.DepthFirstIterator;
@@ -56,7 +60,7 @@ public class GraphMappingTest extends BaseGraphTest {
 		while (itr.hasNext()) {
 			assertTrue("Missing", dInstance.cache.containsKey(itr.next()));
 		}
-		assertEquals("Not all schema elements were cached", 6, dInstance.cache.size()); 
+		assertEquals("Not all schema elements were cached", 7, dInstance.cache.size()); 
 	}	
 	
 	
@@ -66,7 +70,15 @@ public class GraphMappingTest extends BaseGraphTest {
 		JsonNode document = jsonTestData.get("simple-team-document.json");
 		
 		ExpressionBasedMapper mapper = new ExpressionBasedMapper(BaseNode.class);
-		mapper.map(new DocumentGraph(document), new SchemaGraph(schema));
+		Collection<BaseNode> result = mapper.map(new DocumentGraph(document), new SchemaGraph(schema));
+		
+		assertEquals("More node mapped than defined in schema", 4, result.size());
+		for (BaseNode baseNode : result) {
+			assertNotEquals("Noise instance got mapped", "noise", baseNode.getLabels().iterator().next());
+			assertFalse("Noise property mapped to proper instance", baseNode.getProperties().containsKey("noise"));
+		}
+		
+		
 	}
 
 }
