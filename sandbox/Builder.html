@@ -1,0 +1,400 @@
+<!doctype html>
+<html>
+    <head>
+        <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+        <meta content="utf-8" http-equiv="encoding">
+        <title>Network | Saving and loading networks</title>
+
+        <style type="text/css">
+        body {
+            color: "black";
+            font: 12pt arial;
+            background-color: #C8C8C8;
+        }
+
+        #network {
+            width: 600px;
+            height: 600px;
+            border: 1px solid #444444;
+            background-color: #C8C8C8;
+        }		
+
+            #config {
+                float:left;
+                width: 1024px;
+                height: 1024px;
+            }
+            #input_output {
+                height: 10%;
+                width: 15%;
+            }
+
+            p {
+                font-size:16px;
+                max-width:700px;
+            }
+
+			table.legend_table {
+			  font-size: 11px;
+			  border-width:1px;
+			  border-color:#d3d3d3;
+			  border-style:solid;
+			}
+			table.legend_table,td {
+			  border-width:1px;
+			  border-color:#d3d3d3;
+			  border-style:solid;
+			  padding: 2px;
+			}
+			div.table_content {
+			  width:80px;
+			  text-align:center;
+			}
+			div.table_description {
+			  width:100px;
+			}
+
+			#operation {
+			  font-size:28px;
+			}
+			#network-popUp {
+			  display:none;
+			  position:absolute;
+			  top:350px;
+			  left:170px;
+			  z-index:299;
+			  width:500px;
+			  height:350px;
+			  background-color: #f9f9f9;
+			  border-style:solid;
+			  border-width:3px;
+			  border-color: #5394ed;
+			  padding:10px;
+			  text-align: left;
+			}	
+
+			#edge-popUp {
+			  display:none;
+			  position:absolute;
+			  top:350px;
+			  left:170px;
+			  z-index:299;
+			  width:350px;
+			  height:250px;
+			  background-color: #f9f9f9;
+			  border-style:solid;
+			  border-width:3px;
+			  border-color: #5394ed;
+			  padding:10px;
+			  text-align: center;
+			}			
+        </style>
+
+
+    <script type="text/javascript" src="vis.js"></script>
+	<script type="text/javascript" src="vis-network.min.js"></script>
+	
+	<script type="text/javascript" src="options.js"></script>
+	<script type="text/javascript" src="utils.js"></script>
+    <link href="vis.min.css" rel="stylesheet" type="text/css" />
+	<link href="http://visjs.org/dist/vis-network.min.css" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">  
+
+        
+    </head>
+
+    <body>
+		<table>
+			<tr>
+				<td><div id="network"></div></td>
+			<td>
+<textarea rows="35" cols="25" style="width: 542px; height: 528px;">	key
+	summary
+	dueDate
+	updated
+	lastViewed
+	issueType.name
+	issueType.subtask
+	project.key
+	project.name
+	resolution.id
+	resolution.name
+	priority.id
+	priority.name
+	assignee.key
+	assignee.name
+	assignee.emailAddress
+	assignee.displayName
+	assignee.active
+	status.name
+	status.statusCategory.key
+	status.statusCategory.name
+	creator.name
+	creator.key
+	creator.emailAddress
+	creator.displayName
+	creator.active
+</textarea>	
+			</td>
+			</tr>
+		
+		</table>
+		<br/>
+			<textarea id="input_output" style="width: 1160px; height: 920px;"></textarea>
+        <div>
+            <input type="button" id="import_button" onclick="importNetwork()" value="import"></input>
+            <input type="button" id="export_button" onclick="exportNetwork()" value="export"></input>
+            <input type="button" id="destroy_button" onclick="destroyNetwork()" value="destroy"></input>
+        </div>
+		
+		<div id="network-popUp" width="200px">
+		  <span id="operation">node</span> <br>
+		  <table style="margin:auto;"><tr>
+			<td>id</td><td><input id="node-id" value="" disabled="true" /></td>
+		  </tr>
+
+			 <tr>
+			  <td>Uniqueness Criteria:</td>
+			  <td><input id="node-uniqueness" value="key" /></td>
+			</tr>			  
+		  
+			 <tr>
+			  <td>Node Label (Group/Type)</td><td>
+			  <select id="node-group">
+				  <option value="company_goal">Company Goal</option>
+				  <option value="tribe_objective">TO - Tribe Objective</option>
+				  <option value="squad_objective">SO - Squad Objective</option>
+				  <option value="key_result">KR - Key Result </option>
+				  <option value="squad">SQ - Squad</option>
+				  <option value="po">PM - Product Manager</option>
+				  <option value="po">PO - Product Owner</option>
+				  <option value="wso">WSO - Work Stream Owner</option>
+				  <option value="ba">BA - Business Analyst</option>
+				  <option value="dev">DEV - Developer</option>
+				  <option value="qa">QA - Quality Assurance</option>
+				  
+				</select>
+			</td>
+			</tr>
+			<tr>
+			  <td>Display Value</td><td><input id="node-label" value="" /></td>
+			</tr>		
+			<tr>
+			  <td>Extract properties from (comma separated)</td><td><textarea id="node-extract-fields">issue.type</textarea></td>
+			</tr>		
+			</table>
+		  <input type="button" value="save" id="saveButton" />
+		  <input type="button" value="cancel" id="cancelButton" />
+		</div>
+
+		
+		<div id="edge-popUp">
+		  <span id="edge-operation">edge</span> <br>
+		  <table style="margin:auto;">
+			<tr>
+			  <td>Relationship name</td><td><input id="edge-label" value="" /></td>
+			</tr>
+			<tr>
+			  <td>Extract properties from (comma separated)</td><td><textarea id="edge-extract-fields">link</textarea></td>
+			</tr>			
+			</table>
+		  <input type="button" value="save" id="edge-saveButton" />
+		  <input type="button" value="cancel" id="edge-cancelButton" />
+		</div>		
+		
+		<div id="config"></div>
+        <script type="text/javascript">
+			var nodes, edges, network;
+            var container;
+            var exportArea;
+            var importButton;
+            var exportButton;
+
+            function init() {
+                container = document.getElementById('network');
+                exportArea = document.getElementById('input_output');
+                importButton = document.getElementById('import_button');
+                exportButton = document.getElementById('export_button');
+				
+				reset();
+                draw(nodes, edges);
+            }
+
+            function destroyNetwork() {
+                network.destroy();
+            }
+
+            function clearOutputArea() {
+                exportArea.value = "";
+            }
+
+            function draw(nodes, edges) {
+				
+				var data = {
+					nodes: nodes,
+					edges: edges
+				};
+
+                network = new vis.Network(container, data, options);
+
+                clearOutputArea();
+            }
+			
+			function reset(){
+				nodes = new vis.DataSet({});			
+				edges = new vis.DataSet({});
+			}
+
+            function exportNetwork() {
+                clearOutputArea();
+
+                var nodesE = objectToArray(network.getPositions());
+				
+                nodesE.forEach(function(elem){
+					var node = nodes.get(elem.id);
+					elem.connections = network.getConnectedNodes(elem.id);
+					elem.group = node.group;
+					elem.label = node.label;
+				});
+
+				var ejson = new Object();
+				ejson.nodes = nodes.get();
+				ejson.edges = edges.get();
+				exportArea.value = JSON.stringify(ejson, null, 4);
+                resizeExportArea();
+            }
+					
+
+            function importNetwork() {
+                var inputValue = exportArea.value;
+                var inputData = JSON.parse(inputValue);
+				
+				reset();
+				importNodeData(inputData.nodes);
+				importEdgeData(inputData.edges);
+
+				draw(nodes, edges);
+
+                resizeExportArea();
+            }
+
+            function importNodeData(importNodes) {
+                importNodes.forEach(function(elem, index, array) {
+                    try {
+						nodes.add({
+							id: elem.id,
+							x: elem.x,
+							y: elem.y,
+							label: elem.label,
+							group: elem.group,
+							extractFields: elem.extractFields
+						});
+					}
+					catch (err) {
+						alert(err);
+					}
+                });
+            }
+
+            function importEdgeData(importEdges) {
+                importEdges.forEach(function(elem, index, array) {
+					try {
+						edges.add({
+							id: elem.id,
+							from: elem.from,
+							to: elem.to,
+							label: elem.label,
+							extractFields: elem.extractFields,
+							arrows: elem.arrows
+						});
+					}
+					catch (err) {
+						alert(err);
+					}
+                });
+            }
+
+            function getNodeById(data, id) {
+                for (var n = 0; n < data.length; n++) {
+                    if (data[n].id == id) {  // double equals since id can be numeric or string
+                      return data[n];
+                    }
+                };
+
+                throw 'Can not find id \'' + id + '\' in data';
+            }
+
+            function resizeExportArea() {
+                exportArea.style.height = (1 + exportArea.scrollHeight) + "px";
+            }
+
+			function clearPopUp() {
+			  document.getElementById('saveButton').onclick = null;
+			  document.getElementById('cancelButton').onclick = null;
+			  document.getElementById('network-popUp').style.display = 'none';
+			}
+
+			function cancelEdit(callback) {
+			  clearPopUp();
+			  callback(null);
+			}
+
+			function saveNodeData(data,callback) {
+			  data.id = document.getElementById('node-id').value;
+			  data.label = document.getElementById('node-label').value;
+			  data.group = document.getElementById('node-group').value;
+			  data.uniqueness = document.getElementById('node-uniqueness').value;
+			  data.extractFields = document.getElementById('node-extract-fields').value;
+			  clearPopUp();
+			  callback(data);
+			}			
+
+			function clearEdgePopUp() {
+			  document.getElementById('edge-saveButton').onclick = null;
+			  document.getElementById('edge-cancelButton').onclick = null;
+			  document.getElementById('edge-popUp').style.display = 'none';
+			}
+
+			function cancelEdgeEdit(callback) {
+			  clearEdgePopUp();
+			  callback(null);
+			}
+
+			function saveEdgeData1(data, callback) {
+			  if (typeof data.to === 'object')
+				data.to = data.to.id
+			  if (typeof data.from === 'object')
+				data.from = data.from.id
+			  data.label = document.getElementById('edge-label').value;
+			  data.extractFields = document.getElementById('edge-extract-fields').value;
+		  
+			  clearEdgePopUp();
+			  callback(data);  
+			}			
+			function saveEdgeData(data, callback) {
+				if (typeof data.to === 'object')
+					data.to = data.to.id
+				if (typeof data.from === 'object')
+					data.from = data.from.id
+				data.label = document.getElementById('edge-label').value;
+				try{
+					edges.update({
+						id: data.id,
+						from: data.from,
+						to: data.to,
+						label: document.getElementById('edge-label').value,
+						extractFields: document.getElementById('edge-extract-fields').value,
+						arrows: 'to'
+					});
+				}
+				catch (err) {
+					alert(err);
+				}
+				clearEdgePopUp();
+				callback(data);
+			}
+
+            init();
+        </script>
+    </body>
+</html>

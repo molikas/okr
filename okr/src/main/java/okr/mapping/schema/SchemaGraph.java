@@ -13,7 +13,7 @@ import com.fasterxml.jackson.databind.JsonNode;
  * 
  * @author isidenica
  */
-public class GraphSchema extends ContextHolder<SchemaElement>{
+public class SchemaGraph extends GraphHolder<SchemaElement>{
 
 	public static final String NODE_LABELS_KEY = "node-labels";
 	public static final String NODE_PROPERTIES_KEY = "node-properties";
@@ -26,13 +26,13 @@ public class GraphSchema extends ContextHolder<SchemaElement>{
 	private String[] properties = new String[] {"key", "summary", "resolution.name", "status.name"};
 	//	--------------
 	
-	public GraphSchema() {
+	public SchemaGraph() {
 		super();
 		cfg.put(NODE_LABELS_KEY, labels);
 		cfg.put(NODE_PROPERTIES_KEY, properties);
 	}
 	
-	public GraphSchema(JsonNode rootObj) {
+	public SchemaGraph(JsonNode rootObj) {
 		super(rootObj);
 	}
 	
@@ -54,6 +54,7 @@ public class GraphSchema extends ContextHolder<SchemaElement>{
 		mapNodes(nodes);
 		mapEdges(edges);
 	}
+	
 	private void mapNodes(JsonNode nodes) {
 		Iterator<JsonNode> itrNodes = nodes.iterator();
 		while (itrNodes.hasNext()) {
@@ -62,8 +63,9 @@ public class GraphSchema extends ContextHolder<SchemaElement>{
 			JsonNode label = node.get("label");
 			JsonNode uniqueness = node.get("uniqueness");
 			JsonNode group = node.get("group");
+			JsonNode qualifier = node.get("qualifier");
 			String[] extraFields = StringUtils.split(node.get("extractFields").textValue(), ",");
-			SchemaNode schNode = new SchemaNode(id.textValue(), label.textValue(), uniqueness.textValue(), group.textValue(), extraFields);
+			SchemaNode schNode = new SchemaNode(id.textValue(), label.textValue(), uniqueness.textValue(), group.textValue(), qualifier.textValue(), extraFields);
 			graph.addVertex(schNode.getId());
 			cache.put(schNode.getId(), schNode);
 		}
@@ -78,18 +80,18 @@ public class GraphSchema extends ContextHolder<SchemaElement>{
 			JsonNode to = edge.get("to");
 			JsonNode label = edge.get("label");
 			String[] extraFields = StringUtils.split(edge.get("extractFields").textValue(), ",");
-			SchemaNode schEdge = new SchemaNode(id.textValue(), from.textValue(), to.textValue(), label.textValue(), extraFields);
+			SchemaNode schEdge = new SchemaNode(id.textValue(), from.textValue(), to.textValue(), label.textValue(), "", extraFields);
 			graph.addEdge(from.textValue(), to.textValue());
 			cache.put(schEdge.getId(), schEdge);
 		}
 	}
 	
 	public String[] getLables() {
-		return cfg.get(GraphSchema.NODE_LABELS_KEY);
+		return cfg.get(SchemaGraph.NODE_LABELS_KEY);
 	}
 
 	public String[] getProperties() {
-		return cfg.get(GraphSchema.NODE_PROPERTIES_KEY);
+		return cfg.get(SchemaGraph.NODE_PROPERTIES_KEY);
 	}
 
 }

@@ -29,7 +29,7 @@ public class MapperTest {
 	public void saveObjectiveTest() {
 		Iterable<Issue> source = createIssues();
 		
-		Collection<Objective> results = gMapper.map(source, new GraphSchema());
+		Collection<Objective> results = gMapper.map(source, new SchemaGraph());
 		
 		assertTrue("No results returned while mapping an issue", results != null);
 		assertEquals("Mapping returned empty list of results", true, results.iterator().hasNext());

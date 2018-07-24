@@ -5,30 +5,25 @@ package okr.mapping.schema;
  * 
  * @author isidenica
  */
-public class SchemaEdge implements SchemaElement {
-	private String id;
+public class SchemaEdge extends SchemaElement {
+
 	private String from;
 	private String to;
-	private String label;
-	private String[] extractFields;
-	
+
 	public SchemaEdge(String id, String from, String to, String label, String[] extractFields) {
 		super();
-		this.id = id;
+		super.id = id;
 		this.from = from;
 		this.to = to;
-		this.label = label;
-		this.extractFields = extractFields;
+		super.label = label;
+		super.extractFields = extractFields;
 	}
 	
-	public String getId() {
-		return id;
-	}
+	@Override
+	public boolean isQualified(GraphElementDTO element) {
+		return true;
+	}	
 	
-	public void setId(String id) {
-		this.id = id;
-	}
-
 	public String getFrom() {
 		return from;
 	}
@@ -45,22 +40,4 @@ public class SchemaEdge implements SchemaElement {
 		this.to = to;
 	}
 
-	public String getLabel() {
-		return label;
-	}
-
-	public void setLabel(String label) {
-		this.label = label;
-	}
-
-	public String[] getExtractFields() {
-		return extractFields;
-	}
-
-	public void setExtractFields(String[] extractFields) {
-		this.extractFields = extractFields;
-	}
-
-	
-	
 }

@@ -4,12 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * DTO to transfer generic node data
+ * DTO to transfer generic graph element data
  * 
  * @author isidenica
  *
  */
-public class NodeDTO {
+public class GraphElementDTO {
 	
 	private String id;
 	
@@ -17,7 +17,7 @@ public class NodeDTO {
 	
 	private Map<String, String> properties = new HashMap<>();
 	
-	public NodeDTO (String id, String name){
+	public GraphElementDTO (String id, String name){
 		this.id = id;
 		this.name = name;
 	}

@@ -8,15 +8,15 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 /**
  * Holds document instance that should be used for mapping
- * using a concrete {@link GraphSchema}
+ * using a concrete {@link SchemaGraph}
  * 
  * @author isidenica
  */
-public class DocumentInstance extends ContextHolder<NodeDTO> {
+public class DocumentGraph extends GraphHolder<GraphElementDTO> {
 
-	private static final Logger log = Logger.getLogger(DocumentInstance.class.getName());
+	private static final Logger log = Logger.getLogger(DocumentGraph.class.getName());
 	
-	public DocumentInstance(JsonNode rootObj) {
+	public DocumentGraph(JsonNode rootObj) {
 		super(rootObj);
 	}
 
@@ -30,7 +30,10 @@ public class DocumentInstance extends ContextHolder<NodeDTO> {
 		// Store value nodes as properties on parent
 		if (currentNode.isValueNode()) {
 			//TODO normal value conversion
-			appendParentProperties(parentHash, currentField, currentNode.toString());
+			if (currentNode.isTextual())
+				appendParentProperties(parentHash, currentField, currentNode.asText());
+			else appendParentProperties(parentHash, currentField, currentNode.toString());
+			
 			return;
 		}
 		
@@ -40,7 +43,7 @@ public class DocumentInstance extends ContextHolder<NodeDTO> {
 			if (parentHash != currentNode.hashCode()) {
 				graph.addEdge(Integer.toString(parentHash), Integer.toString(currentNode.hashCode()));
 			}
-			NodeDTO nodeDTO = new NodeDTO(Integer.toString(currentNode.hashCode()), currentField);
+			GraphElementDTO nodeDTO = new GraphElementDTO(Integer.toString(currentNode.hashCode()), currentField);
 			cache.put(Integer.toString(currentNode.hashCode()), nodeDTO);
 		}
 		
@@ -70,7 +73,7 @@ public class DocumentInstance extends ContextHolder<NodeDTO> {
 	}
 
 	private void appendParentProperties(Integer parentHash, String pName, String pValue) {
-		NodeDTO parentNode = cache.get(parentHash.toString());
+		GraphElementDTO parentNode = cache.get(parentHash.toString());
 		
 		if (parentNode == null) {
 			log.info("Parent node not registered, paarentHash: "+ parentHash);

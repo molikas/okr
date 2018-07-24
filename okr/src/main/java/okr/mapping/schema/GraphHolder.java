@@ -15,23 +15,23 @@ import com.fasterxml.jackson.databind.JsonNode;
  * @author isidenica
  * @param <T> - cached data object
  */
-public abstract class ContextHolder<T> {
+public abstract class GraphHolder<T> {
 
 	// TODO: Generic for custom typed graph.
-	public Graph<String, DefaultEdge> graph = new DirectedMultigraph<>(DefaultEdge.class);
-	public Map<String, T> cache = new LinkedHashMap<>();
+	public final Graph<String, DefaultEdge> graph = new DirectedMultigraph<>(DefaultEdge.class);
+	public final Map<String, T> cache = new LinkedHashMap<>();
 	
-	/* Constructuors */
-	protected ContextHolder(){}
+	/* Constructors */
+	protected GraphHolder(){}
 	
-	public ContextHolder(JsonNode rootObj) {
+	public GraphHolder(JsonNode rootObj) {
 		super();
 		init(rootObj);
 	}
 	/* --------- */
 	
 	/**
-	 * Called during {@link ContextHolder} instantiation.
+	 * Called during {@link GraphHolder} instantiation.
 	 * Hook to initialize the context for a given document.
 	 * @param rootObj - root json object for a document.
 	 */

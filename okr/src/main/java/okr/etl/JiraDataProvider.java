@@ -18,7 +18,7 @@ import com.atlassian.jira.rest.client.api.domain.SearchResult;
 import com.atlassian.util.concurrent.Promise;
 
 import okr.mapping.schema.ExpressionBasedMapper;
-import okr.mapping.schema.GraphSchema;
+import okr.mapping.schema.SchemaGraph;
 import okr.neo4j.repository.Objective;
 import okr.neo4j.repository.ObjectiveRepository;
 
@@ -58,7 +58,7 @@ public class JiraDataProvider extends JiraInvoker implements DataProvider {
 			SearchResult srez = searchJqlPromise.claim();
 			total = srez.getTotal();
 			
-			objectiveList.addAll(new ExpressionBasedMapper(Objective.class).map(srez.getIssues(), new GraphSchema()));
+			objectiveList.addAll(new ExpressionBasedMapper(Objective.class).map(srez.getIssues(), new SchemaGraph()));
 
 			i += 100;
 		}while (i < total);

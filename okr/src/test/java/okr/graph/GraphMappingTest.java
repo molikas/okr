@@ -12,11 +12,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-import okr.mapping.schema.ContextHolder;
-import okr.mapping.schema.DocumentInstance;
-import okr.mapping.schema.GraphSchema;
-import okr.mapping.schema.NodeDTO;
+import okr.mapping.schema.DocumentGraph;
+import okr.mapping.schema.ExpressionBasedMapper;
+import okr.mapping.schema.GraphElementDTO;
+import okr.mapping.schema.GraphHolder;
 import okr.mapping.schema.SchemaElement;
+import okr.mapping.schema.SchemaGraph;
+import okr.neo4j.repository.BaseNode;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 public class GraphMappingTest extends BaseGraphTest {
@@ -32,7 +34,7 @@ public class GraphMappingTest extends BaseGraphTest {
 	@Test
 	public void simpleSchemaParsersTest() {
 		JsonNode schema = jsonTestData.get("simple-team-schema.json");
-		ContextHolder<SchemaElement> gSchema = new GraphSchema(schema);
+		GraphHolder<SchemaElement> gSchema = new SchemaGraph(schema);
 		
 		DepthFirstIterator<String, DefaultEdge> itr = new DepthFirstIterator<>(gSchema.graph);
 		while (itr.hasNext()) {
@@ -48,7 +50,7 @@ public class GraphMappingTest extends BaseGraphTest {
 	@Test
 	public void simpleDcoumentParsersTest() {
 		JsonNode document = jsonTestData.get("simple-team-document.json");
-		ContextHolder<NodeDTO> dInstance = new DocumentInstance(document);
+		GraphHolder<GraphElementDTO> dInstance = new DocumentGraph(document);
 		
 		DepthFirstIterator<String, DefaultEdge> itr = new DepthFirstIterator<>(dInstance.graph);
 		while (itr.hasNext()) {
@@ -58,6 +60,13 @@ public class GraphMappingTest extends BaseGraphTest {
 	}	
 	
 	
-	
+	@Test
+	public void mapSchemaToDocument() {
+		JsonNode schema = jsonTestData.get("simple-team-schema.json");
+		JsonNode document = jsonTestData.get("simple-team-document.json");
+		
+		ExpressionBasedMapper mapper = new ExpressionBasedMapper(BaseNode.class);
+		mapper.map(new DocumentGraph(document), new SchemaGraph(schema));
+	}
 
 }
