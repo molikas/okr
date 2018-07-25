@@ -35,10 +35,13 @@ public class SpelUtils {
 		for (String fName : expressionSet) {
 			try {
 				Expression exp = spelParser.parseExpression(fName);
-				String value = exp.getValue(eCtx).toString();
-				result.put(fName, value);
+				Object value = exp.getValue(eCtx);
+				if (value != null) {
+					result.put(fName, value.toString());
+				} else {
+					log.info("Failed to extract field: " + fName + " from object: " + objId);
+				}
 			} catch (SpelEvaluationException e) {
-				// TODO error handling
 				log.info("Failed to extract field: " + fName + " from object: " + objId);
 			}
 		}

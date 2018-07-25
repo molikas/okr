@@ -2,13 +2,18 @@ package okr.mapping.schema;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.traverse.BreadthFirstIterator;
 import org.jgrapht.traverse.DepthFirstIterator;
+import org.springframework.data.neo4j.repository.support.GraphEntityInformation;
 
 import okr.neo4j.repository.BaseNode;
 
@@ -24,6 +29,8 @@ public class ExpressionBasedMapper implements GraphMapper {
 	private static final Logger log = Logger.getLogger(ExpressionBasedMapper.class.getName());
 
 	private Class<? extends BaseNode> nodeClazz;
+	
+	public InstanceGraph iGraph = new InstanceGraph();
 	
 	public ExpressionBasedMapper(Class<? extends BaseNode> nodeClazz) {
 		super();
@@ -63,29 +70,74 @@ public class ExpressionBasedMapper implements GraphMapper {
 		// TODO investigate whether traversal listener is a good option here for init case
 		ArrayList<String> edgeList = new ArrayList<>();
 		while (sItr.hasNext()) {
-			String elemId = sItr.next();
-			if (schema.cache.get(elemId) instanceof SchemaNode) {
-				List<BaseNode> matchedNodes = matchObjectsThatMatchCriteria(document, (SchemaNode) schema.cache.get(elemId));
-				res.addAll(matchedNodes);
+			String sElemId = sItr.next();
+			if (schema.cache.get(sElemId) instanceof NodeSchema) {
+				Map<String, BaseNode> matchedNodes = initNodesUsingSchema(document, (NodeSchema) schema.cache.get(sElemId));
+				res.addAll(matchedNodes.values());
 			}else {
-				edgeList.add(elemId);
+				edgeList.add(sElemId);
 			}
 		}
 		
-		for (String edgeId : edgeList) {
-			log.info("Init edge: "+ edgeId);
-		}
+		structuralEdgeMapping(document, schema);
 		
 		return res;
 	}
 	
-	private List<BaseNode> matchObjectsThatMatchCriteria(DocumentGraph document, SchemaNode schemaNode) {
-		List<BaseNode> results = new ArrayList<>();
+	// breadth first mapping
+	private void structuralEdgeMapping(DocumentGraph document, SchemaGraph schema) {
+		for (Entry<String, SchemaElement> entry : schema.cache.entrySet()) {
+			if (entry.getValue() instanceof NodeSchema) continue;
+			EdgeSchema edge = (EdgeSchema) entry.getValue();
+			
+			bindNodes(edge.getFrom(), edge.getTo());
+			iGraph.graph.containsVertex(entry.getKey()); // iGraph i graph of instances has no track back to schema object
+		}
+		
+	}
+
+	// TODO Make more efficient, by doing propeer caching during node parsing.
+	private void bindNodes(String from, String to) {
+		Collection<BaseNode> vals = iGraph.cache.values();
+		List<BaseNode> fromNode = new ArrayList<>(), toNode = new ArrayList<>();
+		
+		for (BaseNode baseNode : vals) {
+			if (baseNode.getSchemaRef().equals(from)) {
+				fromNode.add(baseNode);
+			}
+			if (baseNode.getSchemaRef().equals(to)) {
+				toNode.add(baseNode); 
+			}
+		}
+		if (fromNode == null || toNode == null) {
+			return;
+		}
+		
+		for (BaseNode fNode : fromNode) {
+			for (BaseNode tNode : toNode) {
+				iGraph.graph.addEdge(fNode.getUuid(), tNode.getUuid());
+				log.info("Edge created for nodes: "+fNode.getUuid() + " to node "+ tNode.getUuid());
+			}
+		}
+
+		
+		// Find all nodes initialised by qa_node_schema
+		// Find all node initialised by wso_node_schema
+		// ignore same context SPI == true
+		// get instance UUID and connect from ->to
+	}
+
+	private Map<String, BaseNode> initNodesUsingSchema(DocumentGraph document, NodeSchema schemaNode) {
+		Map<String, BaseNode> results = new HashMap<String, BaseNode>();
 		DepthFirstIterator<String, DefaultEdge> dItr = new DepthFirstIterator<>(document.graph);
 		while (dItr.hasNext()) {
 			GraphElementDTO nodeDTO = document.cache.get(dItr.next());
 			BaseNode node = schemaNode.init(nodeDTO);
-			if (null != node) results.add(node);
+			if (null != node) {
+				results.put(node.getUuid(), node);
+				iGraph.graph.addVertex(node.getUuid());
+				iGraph.cache.put(node.getUuid(), node);
+			}
 		}
 		
 		log.info("Mapping node: "+ schemaNode.getId());

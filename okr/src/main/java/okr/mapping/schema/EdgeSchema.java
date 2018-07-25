@@ -5,17 +5,19 @@ package okr.mapping.schema;
  * 
  * @author isidenica
  */
-public class SchemaEdge extends SchemaElement {
+public class EdgeSchema extends SchemaElement {
 
 	private String from;
 	private String to;
+	private String relationshipType;
 
-	public SchemaEdge(String id, String from, String to, String displayValue, String[] extractFields) {
+	public EdgeSchema(String id, String from, String to, String relationshipType, String[] extractFields) {
 		super();
 		super.id = id;
 		this.from = from;
 		this.to = to;
-		super.displayValue = displayValue;
+		super.displayValue = relationshipType;
+		this.relationshipType = relationshipType;
 		super.extractFields = extractFields;
 	}
 	
@@ -38,6 +40,14 @@ public class SchemaEdge extends SchemaElement {
 
 	public void setTo(String to) {
 		this.to = to;
+	}
+
+	public String getRelationshipType() {
+		return relationshipType;
+	}
+
+	public void setRelationshipType(String relationshipType) {
+		this.relationshipType = relationshipType;
 	}
 
 }

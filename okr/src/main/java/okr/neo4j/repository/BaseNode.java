@@ -11,6 +11,7 @@ import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.Labels;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Properties;
+import org.neo4j.ogm.annotation.Transient;
 
 /**
  * Common persistent node class
@@ -28,6 +29,9 @@ public class BaseNode {
 	
 	@Properties
 	private Map<String, String> properties = new HashMap<>();
+	
+	@Transient
+	private String schemaRef;
 
 	public BaseNode() { 
 		this.uuid = UUID.randomUUID().toString();
@@ -75,6 +79,14 @@ public class BaseNode {
 
 	public void setProperties(Map<String, String> properties) {
 		this.properties = properties;
+	}
+
+	public String getSchemaRef() {
+		return schemaRef;
+	}
+
+	public void setSchemaRef(String schemaRef) {
+		this.schemaRef = schemaRef;
 	}
 
 }

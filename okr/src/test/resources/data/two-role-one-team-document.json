@@ -1,0 +1,20 @@
+{
+  "teamName": "Team B",
+  "members": [
+    {
+      "name": "Workstream Owener",
+      "email": "workstream@email.com",
+      "role": "wso"
+    },
+    {
+      "name": "Quality Expert_1",
+      "email": "quality_1@email.com",
+      "role": "qa"
+    },
+    {
+      "name": "Quality Expert_2",
+      "email": "quality_2@email.com",
+      "role": "qa"
+    }
+  ]
+}

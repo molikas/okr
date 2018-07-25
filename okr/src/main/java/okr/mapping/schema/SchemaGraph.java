@@ -70,7 +70,7 @@ public class SchemaGraph extends GraphHolder<SchemaElement>{
 			if (null != node.get("extractFields")) {
 				extraFields = StringUtils.split(node.get("extractFields").textValue(), ",");
 			}
-			SchemaNode schNode = new SchemaNode(id.textValue(), displayValue.textValue(), uniqueness.textValue(), label.textValue(), qualifier.textValue(), extraFields);
+			NodeSchema schNode = new NodeSchema(id.textValue(), displayValue.textValue(), uniqueness.textValue(), label.textValue(), qualifier.textValue(), extraFields);
 			graph.addVertex(schNode.getId());
 			cache.put(schNode.getId(), schNode);
 		}
@@ -85,7 +85,7 @@ public class SchemaGraph extends GraphHolder<SchemaElement>{
 			JsonNode to = edge.get("to");
 			JsonNode label = edge.get("label");
 			String[] extraFields = StringUtils.split(edge.get("extractFields").textValue(), ",");
-			SchemaNode schEdge = new SchemaNode(id.textValue(), from.textValue(), to.textValue(), label.textValue(), "", extraFields);
+			EdgeSchema schEdge = new EdgeSchema(id.textValue(), from.textValue(), to.textValue(), label.textValue(), extraFields);
 			graph.addEdge(from.textValue(), to.textValue());
 			cache.put(schEdge.getId(), schEdge);
 		}

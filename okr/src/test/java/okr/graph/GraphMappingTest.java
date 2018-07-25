@@ -3,6 +3,8 @@ package okr.graph;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
@@ -77,7 +79,40 @@ public class GraphMappingTest extends BaseGraphTest {
 			assertNotEquals("Noise instance got mapped", "noise", baseNode.getLabels().iterator().next());
 			assertFalse("Noise property mapped to proper instance", baseNode.getProperties().containsKey("noise"));
 		}
+	}
+	
+	@Test
+	public void singleInstanceContextFullGraphMapping() {
+		JsonNode schema = jsonTestData.get("two-role-team-schema.json");
+		JsonNode document = jsonTestData.get("two-role-one-team-document.json");
 		
+		ExpressionBasedMapper mapper = new ExpressionBasedMapper(BaseNode.class);
+		mapper.map(new DocumentGraph(document), new SchemaGraph(schema));
+		
+		assertEquals("More node mapped than defined in schema", 4, mapper.iGraph.cache.size());
+		assertEquals("Amount of Edges is incorrect", 5, mapper.iGraph.graph.edgeSet().size());
+		
+		assertNotNull("Missing edge from QA_1 to WSO", mapper.iGraph.graph.getEdge("quality_1@email.com", "workstream@email.com"));
+		assertNotNull("Missing edge from QA_1 to Squad", mapper.iGraph.graph.getEdge("quality_1@email.com", "Team B"));
+		
+		assertNotNull("Missing edge from QA_2 to WSO", mapper.iGraph.graph.getEdge("quality_2@email.com", "workstream@email.com"));
+		assertNotNull("Missing edge from QA_2 to Squad", mapper.iGraph.graph.getEdge("quality_2@email.com", "Team B"));
+		
+		assertNotNull("Missing edge from WSO to Squad", mapper.iGraph.graph.getEdge("workstream@email.com", "Team B"));
+		
+		assertNull("Edge direction is incorrect", mapper.iGraph.graph.getEdge("Team B", "workstream@email.com"));
+	}
+	
+	@Test
+	public void multipleInstanceContextFullGraphMapping() {
+		JsonNode schema = jsonTestData.get("unit-schema.json");
+		JsonNode document = jsonTestData.get("unit-document.json");
+		
+		ExpressionBasedMapper mapper = new ExpressionBasedMapper(BaseNode.class);
+		mapper.map(new DocumentGraph(document), new SchemaGraph(schema));
+		
+		assertEquals("More node mapped than defined in schema", 8, mapper.iGraph.cache.size());
+//		assertEquals("Amount of Edges is incorrect", 10, mapper.iGraph.graph.edgeSet().size());
 		
 	}
 

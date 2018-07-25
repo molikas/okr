@@ -1,0 +1,25 @@
+unitName=Hokey League
+teams[0]
+  teamName= Ducks
+  members[0]
+     name= Ducks WSO.
+     email= ducks_wso@email.com
+     role= wso
+  members[1]
+     name= Ducks QA.
+     email= ducks_qa@email.com
+     role= qa
+teams[1]
+  teamName= Rockets
+  members[0]
+     name= Rockets WSO.
+     email= rockets_WSO@email.com
+     role= wso
+  members[1]
+     name= Rockets QA1.
+     email= rockets_qa1@email.com
+     role= qa
+  members[2]
+     name= Rockets QA2.
+     email= rockets_qa2@email.com
+     role= qa

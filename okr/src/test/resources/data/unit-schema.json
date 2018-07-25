@@ -1,0 +1,77 @@
+{
+    "nodes": [
+        {
+            "id": "sq_node",
+            "x": 28.988113919093145,
+            "y": -58.05664314644876,
+            "label": "Squad",
+            "group": "squad",
+            "uuid": "properties[teamName]",
+            "qualifier": "properties[teamName] != null"
+        },
+        {
+            "id": "qa_node",
+            "x": 94.45503416949751,
+            "y": 39.943015788256474,
+            "label": "qa",
+            "group": "qa",
+            "uuid": "properties[email]",
+            "extractFields": "properties[name],properties[role],properties[email]",
+            "qualifier": "properties[role] == 'qa'"
+        },
+        {
+            "id": "wso_node",
+            "x": -24.319581476270855,
+            "y": 56.06558881430317,
+            "label": "wso",
+            "group": "wso",
+            "uuid": "properties[email]",
+            "extractFields": "properties[name],properties[role],properties[email]",
+            "qualifier": "properties[role] == 'wso'"
+        },
+        {
+            "id": "unit_node",
+            "x": 106,
+            "y": -158,
+            "label": "Unit",
+            "group": "tribe_objective",
+            "uuid": "properties[unitName]",
+            "extractFields": "properties[name],properties[role],properties[email]",
+            "qualifier": "isNodeName('root')"
+        }
+    ],
+    "edges": [
+        {
+            "id": "qa_to_squad",
+            "from": "qa_node",
+            "to": "sq_node",
+            "label": "belongs_to",
+            "extractFields": "",
+            "arrows": "to"
+        },
+        {
+            "id": "wso_to_squad",
+            "from": "wso_node",
+            "to": "sq_node",
+            "label": "belongs_to",
+            "extractFields": "",
+            "arrows": "to"
+        },
+        {
+            "id": "qa_to_wso",
+            "from": "qa_node",
+            "to": "wso_node",
+            "label": "reports_to",
+            "extractFields": "",
+            "arrows": "to"
+        },
+        {
+            "id": "squad_to_wso",
+            "from": "sq_node",
+            "to": "unit_node",
+            "label": "belongs_to",
+            "extractFields": "",
+            "arrows": "to"
+        }
+    ]
+}

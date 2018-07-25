@@ -1,5 +1,7 @@
 package okr.mapping.schema;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -10,14 +12,15 @@ import okr.neo4j.repository.BaseNode;
  * 
  * @author isidenica
  */
-public class SchemaNode extends SchemaElement {
+public class NodeSchema extends SchemaElement {
 
-	private static final Logger log = Logger.getLogger(SchemaNode.class.getName());
+	private static final Logger log = Logger.getLogger(NodeSchema.class.getName());
 	
 	protected String label;
 	private String uniqueness;
+	public List<String> qualifiedUUIDs = new ArrayList<>();
 	
-	public SchemaNode(String id, String displayValue, String uniqueness, String label, String qualifier, String[] extractFields) {
+	public NodeSchema(String id, String displayValue, String uniqueness, String label, String qualifier, String[] extractFields) {
 		super();
 		super.id = id;
 		super.displayValue = displayValue;
@@ -36,7 +39,9 @@ public class SchemaNode extends SchemaElement {
 		node.setUuid(SpelUtils.extractValue(uniqueness, nodeDTO, nodeDTO.getId()));
 		Map<String, String> eProps = SpelUtils.extractValues(extractFields, nodeDTO, nodeDTO.getId());
 		node.getProperties().putAll(eProps);
+		node.setSchemaRef(this.id);
 		
+		qualifiedUUIDs.add(node.getUuid());
 		log.info("Initializing node "+nodeDTO.getName());
 		return node;
 	}	
