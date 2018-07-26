@@ -19,6 +19,8 @@ public class GraphElementDTO {
 	
 	private String parentId;
 	
+	private String schemaRef;
+	
 	private Map<String, String> properties = new HashMap<>();
 	
 	public GraphElementDTO (String id, String name, String parentId){
@@ -58,6 +60,14 @@ public class GraphElementDTO {
 
 	public void setParentId(String parentId) {
 		this.parentId = parentId;
+	}
+
+	public String getSchemaRef() {
+		return schemaRef;
+	}
+
+	public void setSchemaRef(String schemaRef) {
+		this.schemaRef = schemaRef;
 	}
 	
 	

@@ -1,8 +1,6 @@
 package okr.mapping.schema;
 
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jgrapht.Graph;
@@ -21,21 +19,21 @@ public class SchemaGraph extends GraphHolder<SchemaElement>{
 	
 	public final Graph<String, DefaultWeightedEdge> graph = new DirectedMultigraph<>(DefaultWeightedEdge.class);
 	
-	public static final String NODE_LABELS_KEY = "node-labels";
-	public static final String NODE_PROPERTIES_KEY = "node-properties";
-	public static final String RELATIONSHIPS_KEY = "graph-relationships";
+//	public static final String NODE_LABELS_KEY = "node-labels";
+//	public static final String NODE_PROPERTIES_KEY = "node-properties";
+//	public static final String RELATIONSHIPS_KEY = "graph-relationships";
 	
-	protected Map<String, String[]> cfg = new HashMap<>();
+//	protected Map<String, String[]> cfg = new HashMap<>();
 	
 	//Configuration + default mapping if there is no external configuration
-	private String[] labels = new String[] {"issueType.name"};
-	private String[] properties = new String[] {"key", "summary", "resolution.name", "status.name"};
+//	private String[] labels = new String[] {"issueType.name"};
+//	private String[] properties = new String[] {"key", "summary", "resolution.name", "status.name"};
 	//	--------------
 	
 	public SchemaGraph() {
 		super();
-		cfg.put(NODE_LABELS_KEY, labels);
-		cfg.put(NODE_PROPERTIES_KEY, properties);
+//		cfg.put(NODE_LABELS_KEY, labels);
+//		cfg.put(NODE_PROPERTIES_KEY, properties);
 	}
 	
 	/**
@@ -93,12 +91,12 @@ public class SchemaGraph extends GraphHolder<SchemaElement>{
 		}
 	}
 	
-	public String[] getLables() {
-		return cfg.get(SchemaGraph.NODE_LABELS_KEY);
-	}
-
-	public String[] getProperties() {
-		return cfg.get(SchemaGraph.NODE_PROPERTIES_KEY);
-	}
+//	public String[] getLables() {
+//		return cfg.get(SchemaGraph.NODE_LABELS_KEY);
+//	}
+//
+//	public String[] getProperties() {
+//		return cfg.get(SchemaGraph.NODE_PROPERTIES_KEY);
+//	}
 
 }

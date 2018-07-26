@@ -15,8 +15,9 @@ import okr.neo4j.repository.BaseNode;
  */
 public interface GraphMapper {
 
-	public <S extends BaseNode> Collection<S> map(Iterable<?> sourceList, SchemaGraph gSchema);
+	@Deprecated
+	public <S extends BaseNode> Collection<S> mapNodes(Iterable<?> sourceList, SchemaGraph gSchema);
 	
-	public <S extends BaseNode> Collection<S> mapDocumentUsingSchema(DocumentGraph document, SchemaGraph schema); 
+	public void mapDocumentUsingSchema(DocumentGraph document, SchemaGraph schema); 
 	
 }

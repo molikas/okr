@@ -1,20 +1,12 @@
 package okr.mapping.schema;
 
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import org.jgrapht.Graph;
-import org.jgrapht.GraphPath;
-import org.jgrapht.alg.shortestpath.FloydWarshallShortestPaths;
-import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DefaultWeightedEdge;
-import org.jgrapht.graph.DirectedMultigraph;
 import org.jgrapht.graph.WeightedMultigraph;
-import org.springframework.util.CollectionUtils;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -30,19 +22,13 @@ public class DocumentGraph extends GraphHolder<GraphElementDTO> {
 
 	public final Graph<String, DefaultWeightedEdge> documentGraph = new WeightedMultigraph<>(DefaultWeightedEdge.class);
 	
-	public Map<String, List<GraphElementDTO>> qualifiedNodesCache = new HashMap<>();
-	public DirectedMultigraph<String, DefaultEdge> qualifiedNodesGraph = new DirectedMultigraph<>(DefaultEdge.class);
-	
 	@Override
 	public void init(JsonNode rootObj) {
 		parseJsonToGraph(rootObj.hashCode(), "root", rootObj);
 	}
 	
-	/**
+	/*
 	 * Recursive document parsing to a graph representation
-	 * @param parentHash
-	 * @param currentField
-	 * @param currentNode
 	 */
 	private void parseJsonToGraph(Integer parentHash, String currentField, JsonNode currentNode) {	
 		// Store value nodes as properties on parent

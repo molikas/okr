@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.atlassian.jira.rest.client.api.domain.Issue;
 import com.atlassian.jira.rest.client.api.domain.IssueType;
@@ -18,9 +20,12 @@ import okr.neo4j.repository.Objective;
 /*
  * Generic schema mapper tests
  */
-public class MapperTest {
+@RunWith(SpringJUnit4ClassRunner.class)
+public class ObjectMapperTest {
 
 	private GraphMapper gMapper = new ExpressionBasedMapper(Objective.class);
+	
+	LocalJsonRepository jsonRepo = new LocalJsonRepository();
 	
 	/*
 	 * Sanity check for create operation
@@ -28,8 +33,9 @@ public class MapperTest {
 	@Test
 	public void saveObjectiveTest() {
 		Iterable<Issue> source = createIssues();
+		SchemaGraph schemaGraph = jsonRepo.retrieveSchema("okr-schema.json");
 		
-		Collection<Objective> results = gMapper.map(source, new SchemaGraph());
+		Collection<Objective> results = gMapper.mapNodes(source, schemaGraph);
 		
 		assertTrue("No results returned while mapping an issue", results != null);
 		assertEquals("Mapping returned empty list of results", true, results.iterator().hasNext());

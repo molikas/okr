@@ -18,6 +18,7 @@ import com.atlassian.jira.rest.client.api.domain.SearchResult;
 import com.atlassian.util.concurrent.Promise;
 
 import okr.mapping.schema.ExpressionBasedMapper;
+import okr.mapping.schema.LocalJsonRepository;
 import okr.mapping.schema.SchemaGraph;
 import okr.neo4j.repository.Objective;
 import okr.neo4j.repository.ObjectiveRepository;
@@ -36,8 +37,14 @@ public class JiraDataProvider extends JiraInvoker implements DataProvider {
 	@Value(value="${etl.import.jql}")
 	private String importJql;
 	
+	@Value(value="${etl.import.schemaName}")
+	private String schemaName;	
+	
 	@Autowired
 	private ObjectiveRepository oRepo;
+	
+	@Autowired
+	private LocalJsonRepository jsonRepo;
 	
 	/**
 	 * Load data once on application startup
@@ -58,7 +65,8 @@ public class JiraDataProvider extends JiraInvoker implements DataProvider {
 			SearchResult srez = searchJqlPromise.claim();
 			total = srez.getTotal();
 			
-			objectiveList.addAll(new ExpressionBasedMapper(Objective.class).map(srez.getIssues(), new SchemaGraph()));
+			SchemaGraph gSchema = jsonRepo.retrieveSchema(schemaName);
+			objectiveList.addAll(new ExpressionBasedMapper(Objective.class).mapNodes(srez.getIssues(), gSchema));
 
 			i += 100;
 		}while (i < total);
@@ -77,6 +85,14 @@ public class JiraDataProvider extends JiraInvoker implements DataProvider {
 
 	public void setImportJql(String importJql) {
 		this.importJql = importJql;
+	}
+
+	public String getSchemaName() {
+		return schemaName;
+	}
+
+	public void setSchemaName(String schemaName) {
+		this.schemaName = schemaName;
 	}
 
 }
