@@ -24,7 +24,7 @@ public class SpelUtilsTest {
 	 */
 	@Test
 	public void logicValidationSpels() {
-		GraphElementDTO nodeDto = new GraphElementDTO("1", "name", "0");
+		GraphElementDTO nodeDto = new GraphElementDTO(1, "name");
 		Map<String, String> properties = new HashMap<>();
 		properties.put("name", "John");
 		nodeDto.setProperties(properties);
@@ -33,9 +33,9 @@ public class SpelUtilsTest {
 		String badSpel = "properties[name] == 'Betty'";
 		String nullSpel = "none_existing_property[name] == 'John'";
 		
-		Boolean goodResult = SpelUtils.evaluate(goodSpel, nodeDto, nodeDto.getId());
-		Boolean badResult = SpelUtils.evaluate(badSpel, nodeDto, nodeDto.getId());
-		Boolean nullResult = SpelUtils.evaluate(nullSpel, nodeDto, nodeDto.getId());
+		Boolean goodResult = SpelUtils.evaluate(goodSpel, nodeDto, Integer.toString(nodeDto.getUuid()));
+		Boolean badResult = SpelUtils.evaluate(badSpel, nodeDto, Integer.toString(nodeDto.getUuid()));
+		Boolean nullResult = SpelUtils.evaluate(nullSpel, nodeDto, Integer.toString(nodeDto.getUuid()));
 		
 		assertTrue("String comaprison did not go well: ", goodResult);
 		assertFalse("String comaprison did not go well: ", badResult);

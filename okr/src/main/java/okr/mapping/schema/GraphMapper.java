@@ -22,13 +22,13 @@ public interface GraphMapper {
 	 * @param gSchema - schema to use for mapping
 	 * @return list of persistent nodes
 	 */
-	public <S extends BaseNode> Collection<S> mapNodes(Iterable<?> sourceList, SchemaGraph gSchema);
+	public <S extends BaseNode> Collection<S> mapNodes(Iterable<?> sourceList, SchemaInstance gSchema);
 	
 	/**
 	 * Maps a document graph to to a given schema.
 	 * @param document 
 	 * @param schema
 	 */
-	public void mapDocumentUsingSchema(DocumentGraph document, SchemaGraph schema); 
+	public void mapDocumentUsingSchema(DocumentInstance document, SchemaInstance schema); 
 	
 }

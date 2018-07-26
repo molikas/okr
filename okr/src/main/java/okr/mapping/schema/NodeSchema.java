@@ -35,11 +35,12 @@ public class NodeSchema extends SchemaElement {
 			return null;
 		}
 		BaseNode node = new BaseNode();
+		
 		node.getLabels().add(this.label);
-		node.setUuid(SpelUtils.extractValue(uniqueness, nodeDTO, nodeDTO.getId()));
-		Map<String, String> eProps = SpelUtils.extractValues(extractFields, nodeDTO, nodeDTO.getId());
-		node.getProperties().putAll(eProps);
-		node.setSchemaRef(this.id);
+		node.setUuid(SpelUtils.extractValue(uniqueness, nodeDTO, nodeDTO.getUuidString()));
+		
+		Map<String, String> extraProps = SpelUtils.extractValues(extractFields, nodeDTO, nodeDTO.getUuidString());
+		node.getProperties().putAll(extraProps);
 		
 		qualifiedUUIDs.add(node.getUuid());
 		log.info("Initializing node "+nodeDTO.getName());
@@ -48,7 +49,7 @@ public class NodeSchema extends SchemaElement {
 	
 	@Override
 	public boolean isQualified(GraphElementDTO nodeDTO) {
-		Boolean qualified = SpelUtils.evaluate(qualifier, nodeDTO, nodeDTO.getId());
+		Boolean qualified = SpelUtils.evaluate(qualifier, nodeDTO, nodeDTO.getUuidString());
 		if (qualified != null) {
 			return qualified;
 		}

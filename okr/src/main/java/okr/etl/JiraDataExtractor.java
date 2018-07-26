@@ -19,7 +19,7 @@ import com.atlassian.util.concurrent.Promise;
 
 import okr.mapping.schema.ExpressionBasedMapper;
 import okr.mapping.schema.LocalJsonRepository;
-import okr.mapping.schema.SchemaGraph;
+import okr.mapping.schema.SchemaInstance;
 import okr.neo4j.repository.Objective;
 import okr.neo4j.repository.ObjectiveRepository;
 
@@ -65,7 +65,7 @@ public class JiraDataExtractor extends JiraInvoker {
 			SearchResult srez = searchJqlPromise.claim();
 			total = srez.getTotal();
 			
-			SchemaGraph gSchema = jsonRepo.retrieveSchema(schemaName);
+			SchemaInstance gSchema = jsonRepo.retrieveSchema(schemaName);
 			objectiveList.addAll(new ExpressionBasedMapper(Objective.class).mapNodes(srez.getIssues(), gSchema));
 
 			i += 100;

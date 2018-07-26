@@ -1,11 +1,10 @@
 package okr.mapping.schema;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
-import org.jgrapht.Graph;
-import org.jgrapht.graph.DefaultWeightedEdge;
-import org.jgrapht.graph.DirectedMultigraph;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -14,13 +13,17 @@ import com.fasterxml.jackson.databind.JsonNode;
  * 
  * @author isidenica
  */
-public class SchemaGraph extends GraphHolder<SchemaElement>{
+public class SchemaInstance{
 	
-	public final Graph<String, DefaultWeightedEdge> graph = new DirectedMultigraph<>(DefaultWeightedEdge.class);
+	private JsonNode jsonTree;
 	
-	public SchemaGraph(JsonNode jsonTree) {
+	public final Map<String, NodeSchema> nodes = new HashMap<>();
+	public final Map<String, EdgeSchema> edges = new HashMap<>();
+	
+	public SchemaInstance(JsonNode jsonTree) {
 		super();
-		super.jsonTree = jsonTree;
+		this.jsonTree = jsonTree;
+		init();
 	}
 	
 	/**
@@ -29,7 +32,7 @@ public class SchemaGraph extends GraphHolder<SchemaElement>{
 	 * 
 	 * @param schema
 	 */
-	public void init() {
+	private void init() {
 		JsonNode nodes = jsonTree.get("nodes");
 		JsonNode edges = jsonTree.get("edges");
 		
@@ -42,8 +45,8 @@ public class SchemaGraph extends GraphHolder<SchemaElement>{
 	}
 	
 	// TODO configuration with null checks + identify mvp for set of fields
-	private void mapScehmaNodes(JsonNode nodes) {
-		Iterator<JsonNode> itrNodes = nodes.iterator();
+	private void mapScehmaNodes(JsonNode jsonNodes) {
+		Iterator<JsonNode> itrNodes = jsonNodes.iterator();
 		while (itrNodes.hasNext()) {
 			JsonNode node = itrNodes.next();
 			JsonNode id = node.get("id");
@@ -57,8 +60,7 @@ public class SchemaGraph extends GraphHolder<SchemaElement>{
 				extraFields = StringUtils.split(node.get("extractFields").textValue(), ",");
 			}
 			NodeSchema schNode = new NodeSchema(id.textValue(), displayValue.textValue(), uniqueness.textValue(), label.textValue(), qualifier.textValue(), extraFields);
-			graph.addVertex(schNode.getId());
-			cache.put(schNode.getId(), schNode);
+			nodes.put(schNode.getId(), schNode);
 		}
 	}
 	
@@ -72,8 +74,7 @@ public class SchemaGraph extends GraphHolder<SchemaElement>{
 			JsonNode label = edge.get("label");
 			String[] extraFields = StringUtils.split(edge.get("extractFields").textValue(), ",");
 			EdgeSchema schEdge = new EdgeSchema(id.textValue(), from.textValue(), to.textValue(), label.textValue(), extraFields);
-			graph.addEdge(from.textValue(), to.textValue());
-			cache.put(schEdge.getId(), schEdge);
+			this.edges.put(schEdge.id, schEdge);
 		}
 	}
 

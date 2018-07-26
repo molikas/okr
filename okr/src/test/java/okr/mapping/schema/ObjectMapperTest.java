@@ -33,7 +33,7 @@ public class ObjectMapperTest {
 	@Test
 	public void saveObjectiveTest() {
 		Iterable<Issue> source = createIssues();
-		SchemaGraph schemaGraph = jsonRepo.retrieveSchema("okr-schema.json");
+		SchemaInstance schemaGraph = jsonRepo.retrieveSchema("okr-schema.json");
 		
 		Collection<Objective> results = gMapper.mapNodes(source, schemaGraph);
 		

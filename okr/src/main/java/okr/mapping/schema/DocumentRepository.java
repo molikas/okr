@@ -13,6 +13,6 @@ public interface DocumentRepository {
 	 * @param documentName - name which uniquely identifies the document
 	 * @return initialized DocumentGraph ready for use
 	 */
-	public DocumentGraph retrieveDocument(String documentName);
+	public DocumentInstance retrieveDocument(String documentName);
 	
 }

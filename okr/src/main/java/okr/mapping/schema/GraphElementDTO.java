@@ -2,6 +2,7 @@ package okr.mapping.schema;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -13,32 +14,36 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class GraphElementDTO {
 	
-	private String id;
-	
 	private String name;
 	
-	private String parentId;
-	
-	private String schemaRef;
-	
 	private Map<String, String> properties = new HashMap<>();
+
+	private int uuid;
 	
-	public GraphElementDTO (String id, String name, String parentId){
-		this.id = id;
+	public GraphElementDTO (int uuid, String name){
 		this.name = name;
-		this.parentId = parentId;
+		this.uuid = uuid;
 	}
+	
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) return true;
+        if (!(o instanceof GraphElementDTO)) {
+            return false;
+        }
+        GraphElementDTO dto = (GraphElementDTO) o;
+        return this.uuid == dto.getUuid();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(uuid);
+    }
 	
 	public boolean isNodeName(String nodeName) {
 		return StringUtils.equals(name, nodeName);
 	}
 	
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
 	public Map<String, String> getProperties() {
 		return properties;
 	}
@@ -54,21 +59,17 @@ public class GraphElementDTO {
 		this.name = name;
 	}
 
-	public String getParentId() {
-		return parentId;
-	}
-
-	public void setParentId(String parentId) {
-		this.parentId = parentId;
-	}
-
-	public String getSchemaRef() {
-		return schemaRef;
-	}
-
-	public void setSchemaRef(String schemaRef) {
-		this.schemaRef = schemaRef;
+	public int getUuid() {
+		return uuid;
 	}
 	
+	public String getUuidString() {
+		return Integer.toString(uuid);
+	}
+
+	public void setUuid(int uuid) {
+		this.uuid = uuid;
+	}
+
 	
 }

@@ -22,16 +22,14 @@ public class LocalJsonRepository implements SchemaRepository, DocumentRepository
     private String importPattern = "/schemas/";
     
 	@Override
-	public SchemaGraph retrieveSchema(String schemaName) {
-        SchemaGraph schema = new SchemaGraph(readLocalJson(schemaName));
-        schema.init();
+	public SchemaInstance retrieveSchema(String schemaName) {
+        SchemaInstance schema = new SchemaInstance(readLocalJson(schemaName));
         return (schema);
 	}
 
 	@Override
-	public DocumentGraph retrieveDocument(String documentName) {
-		DocumentGraph dGraph = new DocumentGraph(readLocalJson(documentName));
-		dGraph.init();
+	public DocumentInstance retrieveDocument(String documentName) {
+		DocumentInstance dGraph = new DocumentInstance(readLocalJson(documentName));
 		return dGraph;
 	}
 

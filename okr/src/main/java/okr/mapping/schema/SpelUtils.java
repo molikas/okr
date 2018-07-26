@@ -72,7 +72,7 @@ public class SpelUtils {
 	}
 
 	public static String extractValue(String expression, GraphElementDTO rootObject, String objId) {
-		Map<String, String> vMap = extractValues(new String[] {expression}, rootObject, rootObject.getId());
+		Map<String, String> vMap = extractValues(new String[] {expression}, rootObject, rootObject.getUuidString());
 		if (!vMap.isEmpty() && vMap.size() == 1) {
 			return vMap.values().iterator().next();
 		}else {

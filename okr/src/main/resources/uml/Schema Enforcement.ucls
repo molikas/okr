@@ -28,8 +28,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="4" language="java" name="okr.mapping.schema.SchemaGraph" project="okr" 
-    file="/okr/src/main/java/okr/mapping/schema/SchemaGraph.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="4" language="java" name="okr.mapping.schema.SchemaInstance" project="okr" 
+    file="/okr/src/main/java/okr/mapping/schema/SchemaInstance.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="263" y="397"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -73,8 +73,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="9" language="java" name="okr.mapping.schema.DocumentGraph" project="okr" 
-    file="/okr/src/main/java/okr/mapping/schema/DocumentGraph.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="9" language="java" name="okr.mapping.schema.DocumentInstance" project="okr" 
+    file="/okr/src/main/java/okr/mapping/schema/DocumentInstance.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="579" y="574"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -128,82 +128,66 @@
     </display>  
   </class>  
   <generalization id="15">    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="3"/>  
-  </generalization>  
-  <dependency id="16">    
-    <end type="SOURCE" refId="11"/>    
-    <end type="TARGET" refId="3"/>  
-  </dependency>  
-  <generalization id="17">    
     <end type="SOURCE" refId="5"/>    
     <end type="TARGET" refId="14"/>  
   </generalization>  
-  <generalization id="18">    
+  <generalization id="16">    
     <end type="SOURCE" refId="12"/>    
     <end type="TARGET" refId="3"/>  
   </generalization>  
-  <generalization id="19">    
+  <generalization id="17">    
     <end type="SOURCE" refId="8"/>    
     <end type="TARGET" refId="14"/>  
   </generalization>  
-  <dependency id="20">    
+  <dependency id="18">    
     <end type="SOURCE" refId="11"/>    
     <end type="TARGET" refId="1"/>  
   </dependency>  
-  <realization id="21">    
+  <realization id="19">    
     <end type="SOURCE" refId="7"/>    
     <end type="TARGET" refId="10"/>  
   </realization>  
-  <dependency id="22">    
+  <dependency id="20">    
     <end type="SOURCE" refId="11"/>    
     <end type="TARGET" refId="8"/>  
   </dependency>  
-  <association id="23">    
+  <association id="21">    
     <end type="SOURCE" refId="11" navigable="false">      
-      <attribute id="24" name="iGraph"/>      
-      <multiplicity id="25" minimum="0" maximum="1"/>    
+      <attribute id="22" name="mappedGraph"/>      
+      <multiplicity id="23" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="12" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <dependency id="26">    
+  <dependency id="24">    
     <end type="SOURCE" refId="5"/>    
     <end type="TARGET" refId="2"/>  
   </dependency>  
-  <dependency id="27">    
-    <end type="SOURCE" refId="11"/>    
-    <end type="TARGET" refId="14"/>  
-  </dependency>  
-  <dependency id="28">    
+  <dependency id="25">    
     <end type="SOURCE" refId="11"/>    
     <end type="TARGET" refId="9"/>  
   </dependency>  
-  <dependency id="29">    
+  <dependency id="26">    
     <end type="SOURCE" refId="2"/>    
     <end type="TARGET" refId="1"/>  
   </dependency>  
-  <realization id="30">    
+  <realization id="27">    
     <end type="SOURCE" refId="11"/>    
     <end type="TARGET" refId="13"/>  
   </realization>  
-  <realization id="31">    
+  <realization id="28">    
     <end type="SOURCE" refId="7"/>    
     <end type="TARGET" refId="6"/>  
   </realization>  
-  <generalization id="32">    
-    <end type="SOURCE" refId="9"/>    
-    <end type="TARGET" refId="3"/>  
-  </generalization>  
-  <dependency id="33">    
+  <dependency id="29">    
     <end type="SOURCE" refId="11"/>    
     <end type="TARGET" refId="4"/>  
   </dependency>  
-  <dependency id="34">    
+  <dependency id="30">    
     <end type="SOURCE" refId="11"/>    
     <end type="TARGET" refId="5"/>  
   </dependency>  
-  <dependency id="35">    
+  <dependency id="31">    
     <end type="SOURCE" refId="11"/>    
     <end type="TARGET" refId="2"/>  
   </dependency>  

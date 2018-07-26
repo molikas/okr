@@ -9,5 +9,5 @@ package okr.mapping.schema;
  */
 public interface SchemaRepository {
 
-	public SchemaGraph retrieveSchema(String schemaName);
+	public SchemaInstance retrieveSchema(String schemaName);
 }
