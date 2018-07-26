@@ -24,7 +24,7 @@ public class SpelUtilsTest {
 	 */
 	@Test
 	public void logicValidationSpels() {
-		GraphElementDTO nodeDto = new GraphElementDTO("1", "name");
+		GraphElementDTO nodeDto = new GraphElementDTO("1", "name", "0");
 		Map<String, String> properties = new HashMap<>();
 		properties.put("name", "John");
 		nodeDto.setProperties(properties);

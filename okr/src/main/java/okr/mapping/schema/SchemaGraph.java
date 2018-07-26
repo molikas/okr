@@ -5,6 +5,9 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.jgrapht.Graph;
+import org.jgrapht.graph.DefaultWeightedEdge;
+import org.jgrapht.graph.DirectedMultigraph;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -15,6 +18,9 @@ import com.fasterxml.jackson.databind.JsonNode;
  */
 public class SchemaGraph extends GraphHolder<SchemaElement>{
 
+	
+	public final Graph<String, DefaultWeightedEdge> graph = new DirectedMultigraph<>(DefaultWeightedEdge.class);
+	
 	public static final String NODE_LABELS_KEY = "node-labels";
 	public static final String NODE_PROPERTIES_KEY = "node-properties";
 	public static final String RELATIONSHIPS_KEY = "graph-relationships";
@@ -32,10 +38,6 @@ public class SchemaGraph extends GraphHolder<SchemaElement>{
 		cfg.put(NODE_PROPERTIES_KEY, properties);
 	}
 	
-	public SchemaGraph(JsonNode rootObj) {
-		super(rootObj);
-	}
-	
 	/**
 	 * Naive schema mapping with direct knowledge of schema representation
 	 * format 
@@ -43,7 +45,7 @@ public class SchemaGraph extends GraphHolder<SchemaElement>{
 	 * @param schema
 	 */
 	@Override
-	protected void init(JsonNode schema) {
+	public void init(JsonNode schema) {
 		JsonNode nodes = schema.get("nodes");
 		JsonNode edges = schema.get("edges");
 		
@@ -51,12 +53,12 @@ public class SchemaGraph extends GraphHolder<SchemaElement>{
 			throw new IllegalArgumentException("Illlegal schema expecting array of nodes and edges");
 		}
 		
-		mapNodes(nodes);
-		mapEdges(edges);
+		mapScehmaNodes(nodes);
+		mapSchemaEdges(edges);
 	}
 	
 	// TODO configuraiton with null checks + identify mvp for set of fields
-	private void mapNodes(JsonNode nodes) {
+	private void mapScehmaNodes(JsonNode nodes) {
 		Iterator<JsonNode> itrNodes = nodes.iterator();
 		while (itrNodes.hasNext()) {
 			JsonNode node = itrNodes.next();
@@ -76,7 +78,7 @@ public class SchemaGraph extends GraphHolder<SchemaElement>{
 		}
 	}
 	
-	private void mapEdges(JsonNode edges) {
+	private void mapSchemaEdges(JsonNode edges) {
 		Iterator<JsonNode> itrEdges = edges.iterator();
 		while (itrEdges.hasNext()) {
 			JsonNode edge = itrEdges.next();

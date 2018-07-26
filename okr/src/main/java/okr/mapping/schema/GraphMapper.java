@@ -17,6 +17,6 @@ public interface GraphMapper {
 
 	public <S extends BaseNode> Collection<S> map(Iterable<?> sourceList, SchemaGraph gSchema);
 	
-	public <S extends BaseNode> Collection<S> map(DocumentGraph document, SchemaGraph schema); 
+	public <S extends BaseNode> Collection<S> mapDocumentUsingSchema(DocumentGraph document, SchemaGraph schema); 
 	
 }

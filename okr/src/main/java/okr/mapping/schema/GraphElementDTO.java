@@ -17,11 +17,14 @@ public class GraphElementDTO {
 	
 	private String name;
 	
+	private String parentId;
+	
 	private Map<String, String> properties = new HashMap<>();
 	
-	public GraphElementDTO (String id, String name){
+	public GraphElementDTO (String id, String name, String parentId){
 		this.id = id;
 		this.name = name;
+		this.parentId = parentId;
 	}
 	
 	public boolean isNodeName(String nodeName) {
@@ -47,6 +50,14 @@ public class GraphElementDTO {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(String parentId) {
+		this.parentId = parentId;
 	}
 	
 	

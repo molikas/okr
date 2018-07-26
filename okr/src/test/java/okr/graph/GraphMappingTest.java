@@ -10,6 +10,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.Collection;
 
 import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.traverse.DepthFirstIterator;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,9 +41,11 @@ public class GraphMappingTest extends BaseGraphTest {
 	@Test
 	public void simpleSchemaParsersTest() {
 		JsonNode schema = jsonTestData.get("simple-team-schema.json");
-		GraphHolder<SchemaElement> gSchema = new SchemaGraph(schema);
 		
-		DepthFirstIterator<String, DefaultEdge> itr = new DepthFirstIterator<>(gSchema.graph);
+		SchemaGraph gSchema = new SchemaGraph();
+		gSchema.init(schema);
+		
+		DepthFirstIterator<String, DefaultWeightedEdge> itr = new DepthFirstIterator<>(gSchema.graph);
 		while (itr.hasNext()) {
 			String node = itr.next();
 			assertTrue("Node data missing from cache: " + node, gSchema.cache.containsKey(node));
@@ -56,13 +59,18 @@ public class GraphMappingTest extends BaseGraphTest {
 	@Test
 	public void simpleDcoumentParsersTest() {
 		JsonNode document = jsonTestData.get("simple-team-document.json");
-		GraphHolder<GraphElementDTO> dInstance = new DocumentGraph(document);
 		
-		DepthFirstIterator<String, DefaultEdge> itr = new DepthFirstIterator<>(dInstance.graph);
+		ExpressionBasedMapper mapper = new ExpressionBasedMapper(BaseNode.class);
+		DocumentGraph docGraph = new DocumentGraph();
+		docGraph.init(document);
+		
+		
+		
+		DepthFirstIterator<String, DefaultWeightedEdge> itr = new DepthFirstIterator<>(docGraph.documentGraph);
 		while (itr.hasNext()) {
-			assertTrue("Missing", dInstance.cache.containsKey(itr.next()));
+			assertTrue("Missing", docGraph.cache.containsKey(itr.next()));
 		}
-		assertEquals("Not all schema elements were cached", 7, dInstance.cache.size()); 
+		assertEquals("Not all schema elements were cached", 7, docGraph.cache.size()); 
 	}	
 	
 	
@@ -72,7 +80,12 @@ public class GraphMappingTest extends BaseGraphTest {
 		JsonNode document = jsonTestData.get("simple-team-document.json");
 		
 		ExpressionBasedMapper mapper = new ExpressionBasedMapper(BaseNode.class);
-		Collection<BaseNode> result = mapper.map(new DocumentGraph(document), new SchemaGraph(schema));
+		DocumentGraph docGraph = new DocumentGraph();
+		docGraph.init(document);
+		
+		SchemaGraph schemaGraph = new SchemaGraph();
+		schemaGraph.init(schema);
+		Collection<BaseNode> result = mapper.mapDocumentUsingSchema(docGraph, schemaGraph);
 		
 		assertEquals("More node mapped than defined in schema", 4, result.size());
 		for (BaseNode baseNode : result) {
@@ -87,7 +100,12 @@ public class GraphMappingTest extends BaseGraphTest {
 		JsonNode document = jsonTestData.get("two-role-one-team-document.json");
 		
 		ExpressionBasedMapper mapper = new ExpressionBasedMapper(BaseNode.class);
-		mapper.map(new DocumentGraph(document), new SchemaGraph(schema));
+		DocumentGraph docGraph = new DocumentGraph();
+		docGraph.init(document);
+		
+		SchemaGraph schemaGraph = new SchemaGraph();
+		schemaGraph.init(schema);
+		mapper.mapDocumentUsingSchema(docGraph, schemaGraph);
 		
 		assertEquals("More node mapped than defined in schema", 4, mapper.iGraph.cache.size());
 		assertEquals("Amount of Edges is incorrect", 5, mapper.iGraph.graph.edgeSet().size());
@@ -109,10 +127,18 @@ public class GraphMappingTest extends BaseGraphTest {
 		JsonNode document = jsonTestData.get("unit-document.json");
 		
 		ExpressionBasedMapper mapper = new ExpressionBasedMapper(BaseNode.class);
-		mapper.map(new DocumentGraph(document), new SchemaGraph(schema));
+		DocumentGraph docGraph = new DocumentGraph();
+		docGraph.init(document);
 		
-		assertEquals("More node mapped than defined in schema", 8, mapper.iGraph.cache.size());
-//		assertEquals("Amount of Edges is incorrect", 10, mapper.iGraph.graph.edgeSet().size());
+		SchemaGraph schemaGraph = new SchemaGraph();
+		schemaGraph.init(schema);
+		mapper.mapDocumentUsingSchema(docGraph, schemaGraph);
+		
+		assertEquals("More node mapped than defined in schema", 3, docGraph.qualifiedNodesCache.get("qa_node").size());
+		assertEquals("More node mapped than defined in schema", 2, docGraph.qualifiedNodesCache.get("wso_node").size());
+		assertEquals("More node mapped than defined in schema", 2, docGraph.qualifiedNodesCache.get("sq_node").size());
+		assertEquals("More node mapped than defined in schema", 1, docGraph.qualifiedNodesCache.get("unit_node").size());
+		assertEquals("Amount of Edges is incorrect", 10, docGraph.qualifiedNodesGraph.edgeSet().size());
 		
 	}
 
