@@ -13,13 +13,14 @@ import com.fasterxml.jackson.databind.JsonNode;
  */
 public abstract class GraphHolder<T> {
 
+	protected JsonNode jsonTree;
+	
 	public final Map<String, T> cache = new LinkedHashMap<>();
 	
 	/**
 	 * Called during {@link GraphHolder} instantiation.
 	 * Hook to initialize the context for a given document.
-	 * @param rootObj - root json object for a document.
 	 */
-	protected abstract void init(JsonNode rootObj);
+	public abstract void init();
 	
 }

@@ -22,9 +22,13 @@ public class DocumentGraph extends GraphHolder<GraphElementDTO> {
 
 	public final Graph<String, DefaultWeightedEdge> documentGraph = new WeightedMultigraph<>(DefaultWeightedEdge.class);
 	
-	@Override
-	public void init(JsonNode rootObj) {
-		parseJsonToGraph(rootObj.hashCode(), "root", rootObj);
+	public DocumentGraph (JsonNode jsonTree) {
+		super();
+		super.jsonTree = jsonTree;
+	}
+	
+	public void init() {
+		parseJsonToGraph(jsonTree.hashCode(), "root", jsonTree);
 	}
 	
 	/*

@@ -4,7 +4,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
- * Created by isidenica on 10/31/2017.
+ * Holds jira access related data. 
+ *
+ * @author isidenica
+ *
  */
 @Service
 public class JiraAuthenticationProvider {

@@ -30,9 +30,9 @@ import okr.neo4j.repository.ObjectiveRepository;
  * @author isidenica
  */
 @Component
-public class JiraDataProvider extends JiraInvoker implements DataProvider {
+public class JiraDataExtractor extends JiraInvoker {
 
-	private static final Logger log = Logger.getLogger(JiraDataProvider.class.getName());
+	private static final Logger log = Logger.getLogger(JiraDataExtractor.class.getName());
 	
 	@Value(value="${etl.import.jql}")
 	private String importJql;
@@ -52,7 +52,7 @@ public class JiraDataProvider extends JiraInvoker implements DataProvider {
 	 */
 	@EventListener(ApplicationReadyEvent.class)
 	public void oneBigImportJob() {
-		if (StringUtils.isEmpty(importJql)) return; //TODO: Proper configuration loading
+		if (StringUtils.isEmpty(importJql)) return; //TODO: Proper configuration loading/management
 		
 		Set<String> fields = new HashSet<>(CollectionUtils.arrayToList(new String[]{"*navigable"}));
 

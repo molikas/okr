@@ -19,22 +19,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Component
 public class LocalJsonRepository implements SchemaRepository, DocumentRepository {
 
-//    @Autowired
-//    private ResourceLoader resourceLoader;
-	
     private String importPattern = "/schemas/";
     
 	@Override
 	public SchemaGraph retrieveSchema(String schemaName) {
-        SchemaGraph schema = new SchemaGraph();
-        schema.init(readLocalJson(schemaName));
+        SchemaGraph schema = new SchemaGraph(readLocalJson(schemaName));
+        schema.init();
         return (schema);
 	}
 
 	@Override
 	public DocumentGraph retrieveDocument(String documentName) {
-		DocumentGraph dGraph = new DocumentGraph();
-		dGraph.init(readLocalJson(documentName));
+		DocumentGraph dGraph = new DocumentGraph(readLocalJson(documentName));
+		dGraph.init();
 		return dGraph;
 	}
 
@@ -47,22 +44,6 @@ public class LocalJsonRepository implements SchemaRepository, DocumentRepository
 			e.printStackTrace();
 		}
 		return null;
-//	    Resource[] schResources;
-//		try {
-//			schResources = ResourcePatternUtils.getResourcePatternResolver(resourceLoader).getResources(importPattern+name);
-//		      ObjectMapper mapper = new ObjectMapper();
-//		       
-//		      for (Resource schResource: schResources) {
-//		          File file = schResource.getFile();
-//		          String jsonString = IOUtils.toString(new FileInputStream(file));
-//		          
-//		          return mapper.readTree(jsonString);
-//		      }			
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//
-//		return null;
 	}
 	
 }

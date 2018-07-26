@@ -15,9 +15,20 @@ import okr.neo4j.repository.BaseNode;
  */
 public interface GraphMapper {
 
-	@Deprecated
+	/**	
+	 * Maps a set of objects using a given schema.  
+	 * 
+	 * @param sourceList - list of objects to be used for convesion to node
+	 * @param gSchema - schema to use for mapping
+	 * @return list of persistent nodes
+	 */
 	public <S extends BaseNode> Collection<S> mapNodes(Iterable<?> sourceList, SchemaGraph gSchema);
 	
+	/**
+	 * Maps a document graph to to a given schema.
+	 * @param document 
+	 * @param schema
+	 */
 	public void mapDocumentUsingSchema(DocumentGraph document, SchemaGraph schema); 
 	
 }

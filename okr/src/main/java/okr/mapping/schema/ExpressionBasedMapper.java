@@ -49,7 +49,6 @@ public class ExpressionBasedMapper implements GraphMapper {
 	 * TODO move out label and property mapping to a base class, object properties is decoration
 	 */
 	@Override
-	@Deprecated
 	public <S extends BaseNode> Collection<S> mapNodes(Iterable<?> sourceList, SchemaGraph schema) {
 		Collection<S> res = new ArrayList<>();
 		

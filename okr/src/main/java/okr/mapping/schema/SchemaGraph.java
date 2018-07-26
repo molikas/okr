@@ -15,25 +15,12 @@ import com.fasterxml.jackson.databind.JsonNode;
  * @author isidenica
  */
 public class SchemaGraph extends GraphHolder<SchemaElement>{
-
 	
 	public final Graph<String, DefaultWeightedEdge> graph = new DirectedMultigraph<>(DefaultWeightedEdge.class);
 	
-//	public static final String NODE_LABELS_KEY = "node-labels";
-//	public static final String NODE_PROPERTIES_KEY = "node-properties";
-//	public static final String RELATIONSHIPS_KEY = "graph-relationships";
-	
-//	protected Map<String, String[]> cfg = new HashMap<>();
-	
-	//Configuration + default mapping if there is no external configuration
-//	private String[] labels = new String[] {"issueType.name"};
-//	private String[] properties = new String[] {"key", "summary", "resolution.name", "status.name"};
-	//	--------------
-	
-	public SchemaGraph() {
+	public SchemaGraph(JsonNode jsonTree) {
 		super();
-//		cfg.put(NODE_LABELS_KEY, labels);
-//		cfg.put(NODE_PROPERTIES_KEY, properties);
+		super.jsonTree = jsonTree;
 	}
 	
 	/**
@@ -42,10 +29,9 @@ public class SchemaGraph extends GraphHolder<SchemaElement>{
 	 * 
 	 * @param schema
 	 */
-	@Override
-	public void init(JsonNode schema) {
-		JsonNode nodes = schema.get("nodes");
-		JsonNode edges = schema.get("edges");
+	public void init() {
+		JsonNode nodes = jsonTree.get("nodes");
+		JsonNode edges = jsonTree.get("edges");
 		
 		if (!nodes.isArray() || !edges.isArray()){
 			throw new IllegalArgumentException("Illlegal schema expecting array of nodes and edges");
@@ -55,7 +41,7 @@ public class SchemaGraph extends GraphHolder<SchemaElement>{
 		mapSchemaEdges(edges);
 	}
 	
-	// TODO configuraiton with null checks + identify mvp for set of fields
+	// TODO configuration with null checks + identify mvp for set of fields
 	private void mapScehmaNodes(JsonNode nodes) {
 		Iterator<JsonNode> itrNodes = nodes.iterator();
 		while (itrNodes.hasNext()) {
@@ -90,13 +76,5 @@ public class SchemaGraph extends GraphHolder<SchemaElement>{
 			cache.put(schEdge.getId(), schEdge);
 		}
 	}
-	
-//	public String[] getLables() {
-//		return cfg.get(SchemaGraph.NODE_LABELS_KEY);
-//	}
-//
-//	public String[] getProperties() {
-//		return cfg.get(SchemaGraph.NODE_PROPERTIES_KEY);
-//	}
 
 }
