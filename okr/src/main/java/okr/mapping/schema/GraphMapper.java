@@ -18,7 +18,7 @@ public interface GraphMapper {
 	/**	
 	 * Maps a set of objects using a given schema.  
 	 * 
-	 * @param sourceList - list of objects to be used for convesion to node
+	 * @param sourceList - list of objects to be used for conversion to node
 	 * @param gSchema - schema to use for mapping
 	 * @return list of persistent nodes
 	 */

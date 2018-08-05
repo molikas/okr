@@ -1,9 +1,7 @@
 package okr.mapping.schema;
 
 import java.io.IOException;
-import java.io.InputStream;
 
-import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -17,31 +15,30 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  *
  */
 @Component
-public class LocalJsonRepository implements SchemaRepository, DocumentRepository {
+public class LocalJsonRepository extends LocalRepository implements SchemaRepository, DocumentRepository {
 
-    private String importPattern = "/schemas/";
-    
 	@Override
 	public SchemaInstance retrieveSchema(String schemaName) {
-        SchemaInstance schema = new SchemaInstance(readLocalJson(schemaName));
+		JsonNode jsonNode = parseJson(readLocalFile(SCHEMAS_PATH+schemaName));
+        SchemaInstance schema = new SchemaInstance(jsonNode);
         return (schema);
 	}
 
 	@Override
 	public DocumentInstance retrieveDocument(String documentName) {
-		DocumentInstance dGraph = new DocumentInstance(readLocalJson(documentName));
+		JsonNode jsonNode = parseJson(readLocalFile(DOCUMENTS_PATH+documentName));
+		DocumentInstance dGraph = new DocumentInstance(jsonNode);
 		return dGraph;
 	}
-
-	private JsonNode readLocalJson(String name) {
-	    try {
-	    	InputStream in = getClass().getResourceAsStream(importPattern+name); 
-        	String jsonString = IOUtils.toString(in);
-			return new ObjectMapper().readTree(jsonString);
+	
+	private JsonNode parseJson(String json) {
+		try {
+			return new ObjectMapper().readTree(json);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
+
 	
 }

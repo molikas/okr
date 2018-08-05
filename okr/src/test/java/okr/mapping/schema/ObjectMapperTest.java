@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.atlassian.jira.rest.client.api.domain.Issue;
 import com.atlassian.jira.rest.client.api.domain.IssueType;
@@ -20,7 +18,6 @@ import okr.neo4j.repository.Objective;
 /*
  * Generic schema mapper tests
  */
-@RunWith(SpringJUnit4ClassRunner.class)
 public class ObjectMapperTest {
 
 	private GraphMapper gMapper = new ExpressionBasedMapper(Objective.class);

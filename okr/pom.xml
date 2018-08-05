@@ -8,7 +8,6 @@
 	<name>OKR Application</name>
 	<description>OKR applicaiton</description>
 
-
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
@@ -16,11 +15,11 @@
 	</parent>
 
 	<properties>
-		<java.version>1.8</java.version>
 		<ogm.version>3.1.0</ogm.version>
 		<attlasian.rest.version>5.0.4</attlasian.rest.version>
 		<attlasian.fugue.version>2.2.1</attlasian.fugue.version>
 		<jgrapht.version>1.2.0</jgrapht.version>
+		<poi.xml.version>3.17</poi.xml.version>
 	</properties>
 
 	<dependencies>
@@ -43,7 +42,11 @@
 		  <artifactId>jgrapht-core</artifactId>
 		  <version>${jgrapht.version}</version>			
 		</dependency>
-
+		<dependency>
+		    <groupId>org.jgrapht</groupId>
+		    <artifactId>jgrapht-io</artifactId>
+		    <version>${jgrapht.version}</version>
+		</dependency>
 		
 		<!-- Mocking -->
 		<dependency>
@@ -91,6 +94,13 @@
             <version>${attlasian.fugue.version}</version>
             <scope>provided</scope>
         </dependency>
+        
+<!--         Excel parsing -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>${poi.xml.version}</version>
+		</dependency>
 
 	</dependencies>
 

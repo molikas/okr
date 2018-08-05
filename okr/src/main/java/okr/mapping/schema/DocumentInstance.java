@@ -17,17 +17,14 @@ import com.fasterxml.jackson.databind.JsonNode;
  */
 public class DocumentInstance {
 
-	private JsonNode jsonTree;
-	
 	public final Graph<GraphElementDTO, DefaultWeightedEdge> documentGraph = new WeightedMultigraph<>(DefaultWeightedEdge.class);
 	
 	public DocumentInstance (JsonNode jsonTree) {
 		super();
-		this.jsonTree = jsonTree;
-		init();
+		init(jsonTree);
 	}
 	
-	private void init() {
+	private void init(JsonNode jsonTree) {
 		GraphElementDTO rootDto = new GraphElementDTO(jsonTree.hashCode(), "root");
 		parseJsonToGraph(rootDto, rootDto.getName(), jsonTree);
 	}
@@ -92,6 +89,5 @@ public class DocumentInstance {
 			}
 		}
 	}
-
 
 }

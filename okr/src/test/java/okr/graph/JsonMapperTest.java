@@ -20,7 +20,6 @@ import okr.mapping.schema.LocalJsonRepository;
 import okr.mapping.schema.SchemaInstance;
 import okr.neo4j.repository.BaseNode;
 
-@RunWith(SpringJUnit4ClassRunner.class)
 public class JsonMapperTest {
 	
 	LocalJsonRepository jsonRepo = new LocalJsonRepository();
