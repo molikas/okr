@@ -1,6 +1,6 @@
 package okr.neo4j.repository;
 
-import org.neo4j.ogm.annotation.NodeEntity;;
+import org.neo4j.ogm.annotation.NodeEntity;
 
 @NodeEntity
 public class Objective extends BaseNode {

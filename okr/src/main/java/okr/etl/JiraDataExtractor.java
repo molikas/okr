@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +18,9 @@ import org.springframework.util.StringUtils;
 import com.atlassian.jira.rest.client.api.domain.SearchResult;
 import com.atlassian.util.concurrent.Promise;
 
-import okr.mapping.schema.ExpressionBasedMapper;
-import okr.mapping.schema.LocalJsonRepository;
-import okr.mapping.schema.SchemaInstance;
+import okr.mapping.repositories.LocalJsonRepository;
+import okr.mapping.schema.BaseGraphMapper;
+import okr.mapping.schema.GraphSchema;
 import okr.neo4j.repository.Objective;
 import okr.neo4j.repository.ObjectiveRepository;
 
@@ -56,8 +57,8 @@ public class JiraDataExtractor extends JiraInvoker {
 		
 		Set<String> fields = new HashSet<>(CollectionUtils.arrayToList(new String[]{"*navigable"}));
 
-		int i, total;
-		i = total = 0;
+		int i = 0;
+		int total = 0;
 		List<Objective> objectiveList = new ArrayList<>();
 		do {
 			// get initial data
@@ -65,14 +66,15 @@ public class JiraDataExtractor extends JiraInvoker {
 			SearchResult srez = searchJqlPromise.claim();
 			total = srez.getTotal();
 			
-			SchemaInstance gSchema = jsonRepo.retrieveSchema(schemaName);
-			objectiveList.addAll(new ExpressionBasedMapper(Objective.class).mapNodes(srez.getIssues(), gSchema));
+			GraphSchema gSchema = jsonRepo.retrieveSchema(schemaName);
+			objectiveList.addAll(new BaseGraphMapper(Objective.class).map(srez.getIssues(), gSchema));
 
 			i += 100;
 		}while (i < total);
 		// just to make sure there is no magic
 		if (objectiveList.size() != total) {
-			log.info("Retrieved issues sizes do not match total= "+total+ "; actual size="+objectiveList.size());
+			log.log(Level.WARNING, "Retrieved issues sizes do not match total={0}; actual size= {1}", new Object[] {total, objectiveList.size()});
+			
 		}
 		oRepo.save(objectiveList, 1);
 		oRepo.findAll();

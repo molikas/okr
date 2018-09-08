@@ -1,4 +1,6 @@
-package okr.mapping.schema;
+package okr.mapping.repositories;
+
+import com.fasterxml.jackson.databind.JsonNode;
 
 /**
  * Provides access to the document source.
@@ -13,6 +15,6 @@ public interface DocumentRepository {
 	 * @param documentName - name which uniquely identifies the document
 	 * @return initialized DocumentGraph ready for use
 	 */
-	public DocumentInstance retrieveDocument(String documentName);
+	public JsonNode retrieveDocument(String documentName);
 	
 }

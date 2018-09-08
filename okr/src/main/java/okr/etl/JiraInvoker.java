@@ -34,13 +34,11 @@ public abstract class JiraInvoker {
 		JiraRestClientFactory factory = new AsynchronousJiraRestClientFactory();
 		try {
 			URI jiraServerUri = new URI(jAuthProvider.getUrl());
-			JiraRestClient client = factory.createWithBasicHttpAuthentication(jiraServerUri, jAuthProvider.getUsername(),
+			return factory.createWithBasicHttpAuthentication(jiraServerUri, jAuthProvider.getUsername(),
 					jAuthProvider.getPassword());
-			return client;
 		} catch (URISyntaxException e) {
 			log.log(Level.WARNING, "REST Client init error:", e);
 		}
-		// TODO: Exception management / Reporting.
 		return null;
 	}
 }

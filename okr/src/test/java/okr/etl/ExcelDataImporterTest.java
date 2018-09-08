@@ -12,8 +12,8 @@ import org.junit.Test;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-import okr.mapping.schema.DocumentInstance;
-import okr.mapping.schema.GraphElementDTO;
+import okr.mapping.schema.GraphConverter;
+import okr.neo4j.repository.BaseNode;
 
 /**
  * Test whether the excel format is being imported and represented properly
@@ -80,8 +80,8 @@ public class ExcelDataImporterTest {
 	 */
 	@Test
 	public void excelJsonToGraph() {
-		DocumentInstance document = docRepo.retrieveDocument("two-sheet-investment.xlsx");
-		Set<GraphElementDTO> verts = document.documentGraph.vertexSet();
+		JsonNode document = docRepo.retrieveDocument("two-sheet-investment.xlsx");
+		Set<BaseNode> verts = new GraphConverter().fromJson(document).vertexSet();
 		
 		assertEquals("Wrong amount of vertexes initialized from fiven json", 8, verts.size());
 	}	

@@ -1,4 +1,6 @@
-package okr.mapping.schema;
+package okr.mapping.repositories;
+
+import okr.mapping.schema.GraphSchema;
 
 /**
  * Implementing classes should be able to retrieve
@@ -9,5 +11,5 @@ package okr.mapping.schema;
  */
 public interface SchemaRepository {
 
-	public SchemaInstance retrieveSchema(String schemaName);
+	public GraphSchema retrieveSchema(String schemaName);
 }

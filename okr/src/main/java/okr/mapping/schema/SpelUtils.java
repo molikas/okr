@@ -9,6 +9,8 @@ import org.springframework.expression.spel.SpelEvaluationException;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
+import okr.neo4j.repository.BaseNode;
+
 /**
  * Utility class to remove some boilerplate code used to evaluate SpEL expressions.
  * 
@@ -18,6 +20,8 @@ public class SpelUtils {
 
 	private static final Logger log = Logger.getLogger(SpelUtils.class.getName());
 
+	private SpelUtils() {}
+	
 	/**
 	 * Apply a list of SpEL to a given context. Missing fields will be silently
 	 * skipped.
@@ -55,7 +59,7 @@ public class SpelUtils {
 	 * @param expression - SpEL expression which results in a boolean value
 	 * @param rootObject - object used for evaluation
 	 * @param objId - id used for tracking
-	 * @return true/false based on evaluation results, null if unable to parse
+	 * @return true/false based on evaluation results, false if unable to parse
 	 */
 	public static Boolean evaluate(String expression, Object rootObject, String objId) {
 		StandardEvaluationContext eCtx = new StandardEvaluationContext(rootObject);
@@ -71,8 +75,8 @@ public class SpelUtils {
 		return null;
 	}
 
-	public static String extractValue(String expression, GraphElementDTO rootObject, String objId) {
-		Map<String, String> vMap = extractValues(new String[] {expression}, rootObject, rootObject.getUuidString());
+	public static String extractValue(String expression, BaseNode rootObject, String objId) {
+		Map<String, String> vMap = extractValues(new String[] {expression}, rootObject, rootObject.getUuid());
 		if (!vMap.isEmpty() && vMap.size() == 1) {
 			return vMap.values().iterator().next();
 		}else {

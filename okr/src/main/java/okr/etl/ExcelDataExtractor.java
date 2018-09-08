@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -16,25 +18,25 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import okr.mapping.schema.DocumentInstance;
-import okr.mapping.schema.DocumentRepository;
-import okr.mapping.schema.LocalRepository;
+import okr.mapping.repositories.DocumentRepository;
+import okr.mapping.repositories.LocalRepository;
 
 public class ExcelDataExtractor extends LocalRepository implements DocumentRepository {
 
+	private static final Logger log = Logger.getLogger(ExcelDataExtractor.class.getName());
+	
 	@Override
-	public DocumentInstance retrieveDocument(String documentName) {
-		return new DocumentInstance(retrieveJsonDocument(documentName));
+	public JsonNode retrieveDocument(String documentName) {
+		return retrieveJsonDocument(documentName);
 	}
 
 	public JsonNode retrieveJsonDocument(String documentName) {
-
 		Workbook workbook;
 		try {
 			workbook = new XSSFWorkbook(getInputStream(DOCUMENTS_PATH + documentName));
 
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.getMessage());
 			return null;
 		}
 

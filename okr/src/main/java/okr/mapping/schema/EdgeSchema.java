@@ -1,5 +1,7 @@
 package okr.mapping.schema;
 
+import okr.neo4j.repository.BaseNode;
+
 /**
  * DTO for holding schema related data
  * 
@@ -22,7 +24,7 @@ public class EdgeSchema extends SchemaElement {
 	}
 	
 	@Override
-	public boolean isQualified(GraphElementDTO element) {
+	public boolean isQualified(BaseNode element) {
 		return true;
 	}	
 	

@@ -1,5 +1,7 @@
 package okr.mapping.schema;
 
+import okr.neo4j.repository.BaseNode;
+
 /**
  * Marker interface to aggregate objects
  * used in defining schema elements
@@ -12,7 +14,7 @@ public abstract class SchemaElement {
 	protected String qualifier;
 	protected String[] extractFields;
 	
-	public abstract boolean isQualified(GraphElementDTO element);
+	public abstract boolean isQualified(BaseNode element);
 
 	// Getters - Setters
 	public String getId() {

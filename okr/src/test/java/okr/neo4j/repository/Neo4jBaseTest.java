@@ -29,4 +29,5 @@ public class Neo4jBaseTest{
             graphRepository.deleteAll();
         }
     }
+    
 }

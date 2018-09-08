@@ -2,6 +2,11 @@ package okr.mapping.schema;
 
 import java.util.Collection;
 
+import org.jgrapht.Graph;
+import org.jgrapht.graph.DefaultWeightedEdge;
+
+import com.fasterxml.jackson.databind.JsonNode;
+
 import okr.neo4j.repository.BaseNode;
 
 /**
@@ -22,13 +27,14 @@ public interface GraphMapper {
 	 * @param gSchema - schema to use for mapping
 	 * @return list of persistent nodes
 	 */
-	public <S extends BaseNode> Collection<S> mapNodes(Iterable<?> sourceList, SchemaInstance gSchema);
+	public <S extends BaseNode> Collection<S> map(Iterable<?> sourceList, GraphSchema gSchema);
 	
 	/**
 	 * Maps a document graph to to a given schema.
 	 * @param document 
 	 * @param schema
+	 * @return 
 	 */
-	public void mapDocumentUsingSchema(DocumentInstance document, SchemaInstance schema); 
+	public Graph<BaseNode, DefaultWeightedEdge> map(JsonNode document, GraphSchema schema); 
 	
 }

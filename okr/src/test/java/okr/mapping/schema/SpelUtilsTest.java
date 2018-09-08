@@ -1,4 +1,4 @@
-package okr.graph;
+package okr.mapping.schema;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
@@ -9,8 +9,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import okr.mapping.schema.GraphElementDTO;
-import okr.mapping.schema.SpelUtils;
+import okr.neo4j.repository.BaseNode;
 
 /**
  * Class to test SpelUtils in isolation
@@ -24,22 +23,22 @@ public class SpelUtilsTest {
 	 */
 	@Test
 	public void logicValidationSpels() {
-		GraphElementDTO nodeDto = new GraphElementDTO(1, "name");
+		BaseNode node = new BaseNode("name");
 		Map<String, String> properties = new HashMap<>();
 		properties.put("name", "John");
-		nodeDto.setProperties(properties);
+		node.setProperties(properties);
 
 		String goodSpel = "properties[name] == 'John'";
 		String badSpel = "properties[name] == 'Betty'";
 		String nullSpel = "none_existing_property[name] == 'John'";
 		
-		Boolean goodResult = SpelUtils.evaluate(goodSpel, nodeDto, Integer.toString(nodeDto.getUuid()));
-		Boolean badResult = SpelUtils.evaluate(badSpel, nodeDto, Integer.toString(nodeDto.getUuid()));
-		Boolean nullResult = SpelUtils.evaluate(nullSpel, nodeDto, Integer.toString(nodeDto.getUuid()));
+		Boolean goodResult = SpelUtils.evaluate(goodSpel, node, node.getUuid());
+		Boolean badResult = SpelUtils.evaluate(badSpel, node, node.getUuid());
+		Boolean nullResult = SpelUtils.evaluate(nullSpel, node, node.getUuid());
 		
 		assertTrue("String comaprison did not go well: ", goodResult);
 		assertFalse("String comaprison did not go well: ", badResult);
-		assertNull("Null was not returned given an invalid SpEL", nullResult);
+		assertNull("False was not returned given an invalid SpEL", nullResult);
 	}
 
 	

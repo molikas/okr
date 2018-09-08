@@ -1,11 +1,16 @@
-package okr.mapping.schema;
+package okr.mapping.repositories;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import okr.mapping.schema.GraphSchema;
+import okr.mapping.schema.SchemaConverter;
 
 /**
  * Local repository implementation taking files from
@@ -17,25 +22,25 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Component
 public class LocalJsonRepository extends LocalRepository implements SchemaRepository, DocumentRepository {
 
+	private static final Logger log = Logger.getLogger(LocalJsonRepository.class.getName());
+	
 	@Override
-	public SchemaInstance retrieveSchema(String schemaName) {
+	public GraphSchema retrieveSchema(String schemaName) {
 		JsonNode jsonNode = parseJson(readLocalFile(SCHEMAS_PATH+schemaName));
-        SchemaInstance schema = new SchemaInstance(jsonNode);
+        GraphSchema schema = SchemaConverter.fromJson(jsonNode);
         return (schema);
 	}
 
 	@Override
-	public DocumentInstance retrieveDocument(String documentName) {
-		JsonNode jsonNode = parseJson(readLocalFile(DOCUMENTS_PATH+documentName));
-		DocumentInstance dGraph = new DocumentInstance(jsonNode);
-		return dGraph;
+	public JsonNode retrieveDocument(String documentName) {
+		return parseJson(readLocalFile(DOCUMENTS_PATH+documentName));
 	}
 	
 	private JsonNode parseJson(String json) {
 		try {
 			return new ObjectMapper().readTree(json);
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.getMessage());
 		}
 		return null;
 	}

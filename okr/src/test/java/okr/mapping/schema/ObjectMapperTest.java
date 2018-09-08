@@ -13,6 +13,7 @@ import com.atlassian.jira.rest.client.api.domain.IssueType;
 import com.atlassian.jira.rest.client.api.domain.Resolution;
 import com.atlassian.jira.rest.client.api.domain.Status;
 
+import okr.mapping.repositories.LocalJsonRepository;
 import okr.neo4j.repository.Objective;
 
 /*
@@ -20,7 +21,7 @@ import okr.neo4j.repository.Objective;
  */
 public class ObjectMapperTest {
 
-	private GraphMapper gMapper = new ExpressionBasedMapper(Objective.class);
+	private GraphMapper gMapper = new BaseGraphMapper(Objective.class);
 	
 	LocalJsonRepository jsonRepo = new LocalJsonRepository();
 	
@@ -30,9 +31,9 @@ public class ObjectMapperTest {
 	@Test
 	public void saveObjectiveTest() {
 		Iterable<Issue> source = createIssues();
-		SchemaInstance schemaGraph = jsonRepo.retrieveSchema("okr-schema.json");
+		GraphSchema schemaGraph = jsonRepo.retrieveSchema("okr-schema.json");
 		
-		Collection<Objective> results = gMapper.mapNodes(source, schemaGraph);
+		Collection<Objective> results = gMapper.map(source, schemaGraph);
 		
 		assertTrue("No results returned while mapping an issue", results != null);
 		assertEquals("Mapping returned empty list of results", true, results.iterator().hasNext());
